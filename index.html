@@ -434,6 +434,71 @@ fieldset{border:0;padding:0;margin:0}
 .send{width:48px;height:48px;flex:none;border:0;border-radius:50%;background:linear-gradient(135deg,var(--violet),var(--magenta));color:#fff;display:grid;place-items:center}
 a.brand{text-decoration:none;color:var(--ink)}
 
+
+/* espace coachs */
+.coach-sess{display:flex;gap:14px;align-items:center}
+.coach-sess .date{width:58px;flex:none}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--surface-2);padding:4px;border-radius:16px}
+.seg button{border:0;background:transparent;border-radius:12px;padding:11px 6px;font-weight:800;font-size:14px;color:var(--muted)}
+.seg button[aria-selected="true"]{background:var(--surface);color:var(--violet);box-shadow:0 2px 8px rgba(40,20,70,.12)}
+.coach-card{gap:14px}
+.call-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.hint{margin:0;font-size:13px;color:var(--muted);font-weight:700}
+.roll{display:grid;grid-template-columns:1fr;gap:6px}
+@media (min-width:700px){.roll{grid-template-columns:1fr 1fr}}
+.gym{display:flex;align-items:center;gap:10px;border:1.5px solid var(--line);background:var(--surface);border-radius:16px;padding:8px 10px;text-align:left;color:var(--ink);min-height:54px}
+.gym.here{border-color:var(--ok);background:var(--ok-soft)}
+.gym-name{font-weight:800;flex:1;min-width:0}
+.tick{width:30px;height:30px;flex:none;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-weight:900;color:#fff}
+.gym.here .tick{background:var(--ok);border-color:var(--ok)}
+.timeline-bar{display:flex;flex-direction:column;gap:6px;font-weight:800}
+.timeline-bar .tl{display:flex;height:14px;border-radius:999px;overflow:hidden;gap:2px;background:var(--surface-2)}
+.timeline-bar small{font-size:13px}
+.timeline-bar.ok small{color:var(--ok)} .timeline-bar.warn small{color:var(--wait)}
+.steps-ed{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.steps-ed li{display:grid;grid-template-columns:46px 1fr auto;gap:10px;align-items:center;border:1px solid var(--line);border-radius:16px;padding:10px}
+.st-main{display:flex;flex-direction:column;gap:6px;min-width:0}
+.st-main input,.field input{width:100%;min-width:0}
+.st-main input{border:1.5px solid var(--line);border-radius:10px;padding:8px 10px;font:inherit;font-size:14px;background:var(--bg);color:var(--ink)}
+.st-tools{display:flex;flex-direction:column;gap:4px}
+.st-tools button{width:32px;height:28px;border-radius:8px;border:1px solid var(--line);background:var(--surface);font-weight:800}
+.st-tools button:disabled{opacity:.35}
+.stepper.sm{gap:8px}.stepper.sm button{width:30px;height:30px;font-size:16px}.stepper.sm b{font-size:16px;min-width:22px}
+.pick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.pick button{display:flex;flex-direction:column;align-items:center;gap:6px;border:1.5px solid var(--line);background:var(--surface);border-radius:16px;padding:10px 4px;font-weight:800;font-size:12px}
+.gym-pick{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.gym-pick::-webkit-scrollbar{display:none}
+.gym-pick .kid{flex:none}
+.gym-pick .m-av{width:28px;height:28px;font-size:13px}
+.badges{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media (min-width:700px){.badges{grid-template-columns:repeat(4,1fr)}.badges.mine{grid-template-columns:repeat(6,1fr)}}
+.badge-el{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;border:1.5px dashed var(--line);background:transparent;border-radius:18px;padding:12px 6px;font-weight:800;font-size:12px;text-align:center;color:var(--muted)}
+.badge-el .ico{filter:grayscale(1);opacity:.35}
+.badge-el.on{border-style:solid;border-color:transparent;background:var(--surface);color:var(--ink);box-shadow:0 0 0 2px var(--star),0 6px 16px rgba(255,204,0,.2)}
+.badge-el.on .ico{filter:none;opacity:1}
+.bstar{position:absolute;top:4px;right:8px;color:var(--star);font-style:normal;font-size:16px}
+.badges.mine{grid-template-columns:repeat(4,1fr)}
+.badges.mine .badge-el{padding:8px 4px;font-size:11px}
+
+
+/* accueil tableau de bord */
+.next{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:14px;box-shadow:0 4px 18px rgba(60,30,100,.06)}
+.next-top{display:flex;gap:14px;align-items:center}
+.next-top .date{width:64px;flex:none;background:var(--violet);color:#fff}
+.next-top .date small{color:rgba(255,255,255,.8)}
+.next-info{display:flex;flex-direction:column;gap:2px;min-width:0}
+.next-info b{font-family:var(--f-display);font-size:20px;line-height:1.2}
+.dash{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (min-width:900px){.dash{grid-template-columns:repeat(4,1fr)}}
+.tile{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:14px;border-radius:18px;border:1px solid var(--line);background:var(--surface);color:var(--ink);text-decoration:none;text-align:left;font:inherit;min-height:112px}
+.tile-ic{font-size:22px;margin-bottom:4px}
+.tile b{font-family:var(--f-display);font-size:30px;line-height:1}
+.tile span:last-child{font-weight:700;font-size:14px;color:var(--muted);line-height:1.25}
+.tile.warn{background:var(--wait-soft);border-color:transparent}.tile.warn b{color:var(--wait)}
+.tile.good b{color:var(--ok)}
+.tile.info{background:var(--violet-soft);border-color:transparent}.tile.info b{color:var(--violet)}
+.tile.star b{color:var(--wait)}
+
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -497,6 +562,10 @@ const PLANS = [
   {theme:'Mission acrobate',defi:'Une roue bien droite sur la ligne !',steps:[['echauf',2,'Parcours rigolo'],['sol',4,'Roue, poirier, pont'],['poutre',2,'Pas chassés, arabesque'],['jeu',2,'Chat perché gym'],['etire',1,'On respire, on s’étire']]},
 ];
 function planFor(group,sess){
+  const cp=(typeof customPlans!=='undefined')&&customPlans[`${group}|${sess.key}`];
+  if(cp){ const [h1,m1]=sess.s.split(':').map(Number); let t=h1*60+m1;
+    const steps=cp.steps.map(([k,m,txt])=>{const st={k,min:m,txt,at:`${Math.floor(t/60)}h${pad(t%60)}`};t+=m;return st});
+    return {theme:cp.theme,defi:cp.defi,steps,total:steps.reduce((a,x)=>a+x.min,0),custom:true}; }
   const wk=Math.floor((sess.date - new Date(2026,8,7))/(7*864e5));
   const p=PLANS[((wk%3)+3+(sess.s<'12:00'?1:0))%3];
   const [h1,m1]=sess.s.split(':').map(Number),[h2,m2]=sess.e.split(':').map(Number);
@@ -624,28 +693,31 @@ function vAccueil(){
   const k=kid(); const g=GROUPS[k.group];
   const list=sessions(k.group,16); const real=list.filter(s=>s.type==='sess'&&!s.ferie); const next=real[0];
   const hol=list[0]&&list[0].type==='hol'?list[0]:null;
-  const upcoming=EVENTS.filter(e=>parse(e.end||e.date)>=today && forGroup(e,k.group)).slice(0,2);
+  const nextEv=EVENTS.find(e=>parse(e.end||e.date)>=today && forGroup(e,k.group));
+  const pending=real.slice(0,6).filter(s=>!rsvp[keyFor(k,s)]).length;
+  const unread=Object.values(CHANNELS).reduce((a,c)=>a+(seenCh[c.id]?0:c.unread),0);
+  const docsTodo=TODO_DOCS.filter(d=>!(sent[`${k.id}|${d.id}`]||d.init==='done')).length;
+  const nb=(badges[`${k.group}|${k.name}`]||[]).length;
   const p=next&&planFor(k.group,next);
+  const tile=(href,attr,n,label,state,ic)=>`<${href?`a href="${href}"`:'button'} ${attr} class="tile ${state}"><span class="tile-ic" aria-hidden="true">${ic}</span><b class="tnum">${n}</b><span>${label}</span></${href?'a':'button'}>`;
   return `
-  <div class="topbar"><a class="brand" href="#club" aria-label="Le club"><img class="logo" src="${LOGO}" alt="" width="52" height="52"><div><b>Académie Gymnique</b><small>Méditerranée · le club ›</small></div></a></div>
-  <h1 class="hello">Salut <span class="script">${esc(k.name)}</span> !</h1>
+  <div class="topbar"><a class="brand" href="#club" aria-label="Le club"><img class="logo" src="${LOGO}" alt="" width="44" height="44"><div><b>Bonjour 👋</b><small>Académie Gymnique Méditerranée</small></div></a></div>
   ${kidChips()}
-  ${next?`<section class="hero" aria-label="Prochain cours">
-    ${hol?`<span class="hol-tag">🌴 Vacances · reprise bientôt</span>`:''}
-    <div class="hero-top"><div><span class="eyebrow">Prochain cours</span><h2>${cap1(fr(next.date,{weekday:'long',day:'numeric',month:'long'}))}</h2>
-    <div class="when tnum">${hhmm(next.s)} – ${hhmm(next.e)} <span class="where">${I.pin}Cuers</span></div></div>
-    <span class="grp-badge">${k.group} ${stars(g.n)}</span></div>
-    <button class="peek" data-plan="${next.key}"><span class="peek-icons">${p.steps.map(s=>ico(s.k,'sm')).join('')}</span><span><b>${p.theme}</b><small>Voir le programme</small></span><span class="go" aria-hidden="true">›</span></button>
+  ${next?`<section class="next" aria-label="Prochain cours">
+    <div class="next-top">${dateBlock(next.date)}<div class="next-info"><span class="eyebrow">Prochain cours${hol?' · après les vacances':''}</span>
+      <b>${cap1(fr(next.date,{weekday:'long'}))} · <span class="tnum">${hhmm(next.s)} – ${hhmm(next.e)}</span></b>
+      <span class="sess-meta">${k.group} · Cuers</span></div></div>
     ${rsvpControl(k,next,true)}
+    <button class="prog" data-plan="${next.key}"><span class="peek-icons">${p.steps.slice(1,3).map(x=>ico(x.k,'sm')).join('')}</span>Le programme : ${esc(p.theme)} ›</button>
   </section>`:'<div class="empty">Pas de cours prévu.</div>'}
-  <div class="two">
-    <section class="col"><div class="sh"><h2>Les prochains cours</h2><a class="link" href="#planning">Tout voir ›</a></div>
-      <div class="week">${real.slice(1,3).map(s=>sessionRow(k,s)).join('')}</div></section>
-    <section class="col"><div class="sh"><h2>Au club bientôt</h2><a class="link" href="#agenda">Agenda ›</a></div>
-      <div class="events one">${upcoming.map(e=>eventCard(e,k)).join('')}</div></section>
-  </div>`;
+  <div class="dash">
+    ${tile('#planning','',pending||'✓',pending?(pending>1?'cours à répondre':'cours à répondre'):'Présences à jour',pending?'warn':'good','📅')}
+    ${tile('#messages','',unread||'0',unread>1?'messages non lus':'message non lu',unread?'info':'calm','💬')}
+    ${tile('#docs','',docsTodo||'✓',docsTodo?(docsTodo>1?'documents à donner':'document à donner'):'Documents à jour',docsTodo?'warn':'good','📄')}
+    ${tile('','data-mybadges',`★ ${nb}`,'badges gagnés','star','🏅')}
+  </div>
+  ${nextEv?`<section class="col"><div class="sh"><h2>Prochain événement</h2><a class="link" href="#agenda">Agenda ›</a></div><div class="events one">${eventCard(nextEv,k)}</div></section>`:''}`;
 }
-
 function vPlanning(){
   const k=kid();
   const list=sessions(k.group,10); const real=list.filter(s=>s.type==='sess'&&!s.ferie);
@@ -697,23 +769,82 @@ function vClub(){
 }
 
 function seeded(g,i){let x=(g.charCodeAt(4)*97+i*31)%100;return x/100}
-function vCoachs(){
-  return `
-  <h1 class="hello">Qui <span class="script">vient ?</span></h1>
-  <div class="coach">${Object.entries(GROUPS).map(([n,g])=>{
-    const s=sessions(n,6).find(x=>x.type==='sess'&&!x.ferie); if(!s) return '';
-    let yes=Math.round(g.effectif*(.45+seeded(n,1)*.25)), no=Math.round(g.effectif*(.08+seeded(n,2)*.1));
-    kids.filter(k=>k.group===n).forEach(k=>{const v=rsvp[keyFor(k,s)]; if(v==='yes')yes++; if(v==='no')no++});
-    const tot=g.effectif; yes=Math.min(yes,tot); no=Math.min(no,tot-yes); const wait=tot-yes-no;
-    return `<section class="card"><div class="row"><h3>${n}</h3><span class="sess-meta tnum">${fr(s.date,{weekday:'short',day:'numeric'})} · ${hhmm(s.s)}</span></div>
-      <div><b class="coach-n tnum">${yes}</b> <span class="sess-meta">/ ${tot}</span></div>
-      <div class="stack" aria-hidden="true"><i style="width:${yes/tot*100}%;background:var(--ok)"></i><i style="width:${no/tot*100}%;background:var(--no)"></i><i style="width:${wait/tot*100}%;background:var(--star)"></i></div>
-      <div class="legend tnum"><span><i class="dot" style="background:var(--ok)"></i>${yes} oui</span><span><i class="dot" style="background:var(--no)"></i>${no} non</span><span><i class="dot" style="background:var(--star)"></i>${wait} ?</span></div>
-      <button class="btn sm ghost" data-toast="🔔 Rappel envoyé (aperçu)" ${wait?'':'disabled'}>🔔 Relancer</button></section>`}).join('')}</div>
-  <p class="proto">Aperçu côté coachs · autres familles simulées</p>`;
+/* ================= espace coachs ================= */
+const NAMES=['Jade','Inès','Rose','Lou','Zoé','Emma','Léna','Chloé','Manon','Anna','Lina','Mia','Sofia','Alba','Nina','Romy','Ambre','Louise','Margaux','Iris','Julia','Lola','Elsa','Agathe','Mila','Capucine','Valentine','Clara','Héloïse','Maëlle','Céleste','Victoire','Juliette','Noémie','Ella','Rosalie','Lisa','Camille','Eva','Léonie','Alice','Jeanne'];
+const ELEMENTS=[
+  {id:'rav',k:'sol',name:'Roulade avant'},{id:'rar',k:'sol',name:'Roulade arrière'},{id:'chd',k:'sol',name:'Chandelle'},{id:'pont',k:'sol',name:'Pont'},
+  {id:'roue',k:'sol',name:'Roue'},{id:'atr',k:'sol',name:'Poirier'},{id:'eqp',k:'poutre',name:'Équilibre poutre'},{id:'dtp',k:'poutre',name:'Demi-tour poutre'},
+  {id:'apb',k:'barres',name:'Appui barres'},{id:'bal',k:'barres',name:'Balancés'},{id:'sext',k:'saut',name:'Saut extension'},{id:'sgr',k:'saut',name:'Saut groupé'},
+];
+let coachGroup=store.get('cgroup','GAF 1'), coachTab=store.get('ctab','appel');
+let appel=store.get('appel',{}), appelDone=store.get('appelDone',{}), customPlans=store.get('plans',{});
+let badges=store.get('badges',{'GAF 1|Lia':['rav','chd','sext']}), badgeGym=null, draft=null, picker=false;
+function roster(g){
+  const off=Object.keys(GROUPS).indexOf(g)*14; const n=GROUPS[g].effectif;
+  const real=kids.filter(k=>k.group===g).map(k=>({name:k.name,kid:k}));
+  const others=NAMES.slice(off,off+n).filter(x=>!real.some(r=>r.name===x)).slice(0,n-real.length).map((name,i)=>({name,i}));
+  return [...real,...others].sort((a,b)=>a.name.localeCompare(b.name,'fr'));
 }
+function coachNext(g){return sessions(g,8).find(x=>x.type==='sess'&&!x.ferie)}
+function answerOf(g,s,gym){
+  if(gym.kid) return rsvp[keyFor(gym.kid,s)]||null;
+  const r=seeded(g,gym.i+3+gym.name.length); return r<.62?'yes':r<.78?'no':null;
+}
+const callKey=(g,s,gym)=>`${g}|${s.key}|${gym.name}`;
+function isHere(g,s,gym){const v=appel[callKey(g,s,gym)];return v===undefined?answerOf(g,s,gym)==='yes':v}
 
-
+function coachAppel(g,s){
+  const list=roster(g); const here=list.filter(x=>isHere(g,s,x)).length;
+  const done=appelDone[`${g}|${s.key}`];
+  return `<div class="call-head"><div><b class="coach-n tnum">${here}</b> <span class="sess-meta">/ ${list.length} présentes</span></div>
+    ${done?'<span class="pill ok">✓ Appel validé</span>':''}</div>
+  <p class="hint">Les filles qui ont répondu « Oui » sont déjà cochées. Touche un prénom pour changer.</p>
+  <div class="roll">${list.map(gym=>{const h=isHere(g,s,gym), a=answerOf(g,s,gym);
+    const flag=!h&&a!=='no'?'<span class="pill no">Sans prévenir</span>':a==='no'?'<span class="pill off">A prévenu</span>':!a&&h?'<span class="pill wait">Pas répondu</span>':'';
+    return `<button class="gym${h?' here':''}" data-call="${esc(gym.name)}" aria-pressed="${h}">${avatar(gym.name)}<span class="gym-name">${esc(gym.name)}</span>${flag}<span class="tick" aria-hidden="true">${h?'✓':''}</span></button>`}).join('')}</div>
+  <button class="btn big" data-appeldone>${I.yes}${done?'Appel enregistré':'Valider l’appel'}</button>`;
+}
+function startDraft(g,s){const p=planFor(g,s);draft={key:`${g}|${s.key}`,theme:p.theme,defi:p.defi,steps:p.steps.map(x=>[x.k,x.min,x.txt])}}
+function coachProg(g,s){
+  if(!draft||draft.key!==`${g}|${s.key}`) startDraft(g,s);
+  const [h1,m1]=s.s.split(':').map(Number),[h2,m2]=s.e.split(':').map(Number); const dur=(h2*60+m2)-(h1*60+m1);
+  const tot=draft.steps.reduce((a,x)=>a+x[1],0); const pub=customPlans[draft.key];
+  return `<div class="field"><label for="dTheme">Nom de la mission</label><input id="dTheme" data-draft="theme" value="${esc(draft.theme)}" maxlength="30"></div>
+  <div class="timeline-bar tnum ${tot===dur?'ok':'warn'}"><span>${tot} / ${dur} min</span><div class="tl">${draft.steps.map(x=>`<i style="flex:${x[1]};background:${APPARATUS[x[0]].col}" title="${APPARATUS[x[0]].name}"></i>`).join('')}</div><small>${tot===dur?'Pile la durée du cours 👌':tot<dur?`Il reste ${dur-tot} min`:`${tot-dur} min de trop`}</small></div>
+  <ol class="steps-ed">${draft.steps.map(([k,m,txt],i)=>`<li>
+    ${ico(k)}<div class="st-main"><div class="row"><b>${APPARATUS[k].name}</b><div class="stepper sm"><button data-min="${i}|-5" aria-label="Moins 5 minutes">−</button><b class="tnum">${m}</b><button data-min="${i}|5" aria-label="Plus 5 minutes">+</button></div></div>
+    <input data-draft="txt|${i}" value="${esc(txt)}" maxlength="40" aria-label="Consigne pour ${APPARATUS[k].name}" placeholder="Consigne courte"></div>
+    <div class="st-tools"><button data-mv="${i}|-1" aria-label="Monter" ${i?'':'disabled'}>↑</button><button data-mv="${i}|1" aria-label="Descendre" ${i<draft.steps.length-1?'':'disabled'}>↓</button><button data-rm="${i}" aria-label="Supprimer">✕</button></div></li>`).join('')}</ol>
+  ${picker?`<div class="pick">${Object.keys(APPARATUS).map(k=>`<button data-addstep="${k}">${ico(k)}<span>${APPARATUS[k].name}</span></button>`).join('')}</div>`:`<button class="upload" data-picker>+ Ajouter une étape</button>`}
+  <div class="field"><label for="dDefi">Défi du jour ★</label><input id="dDefi" data-draft="defi" value="${esc(draft.defi)}" maxlength="70"></div>
+  <div class="bulk"><button class="btn ghost" data-preview="${s.key}">👀 Aperçu enfant</button><button class="btn" data-publish>${pub?'Mettre à jour':'Publier aux familles'}</button></div>
+  ${pub?'<p class="hint">✓ Publié : les familles voient ce programme dans « Le programme ».</p>':''}`;
+}
+function coachBadges(g){
+  const list=roster(g);
+  if(!badgeGym||!list.some(x=>x.name===badgeGym)) badgeGym=list[0].name;
+  const got=badges[`${g}|${badgeGym}`]||[];
+  return `<div class="gym-pick">${list.map(gym=>{const n=(badges[`${g}|${gym.name}`]||[]).length;return `<button class="kid" data-bgym="${esc(gym.name)}" aria-pressed="${gym.name===badgeGym}">${avatar(gym.name)}${esc(gym.name)}${n?` <small>★${n}</small>`:''}</button>`}).join('')}</div>
+  <div class="call-head"><b>${esc(badgeGym)}</b><span class="pill ok">★ ${got.length} / ${ELEMENTS.length}</span></div>
+  <div class="badges">${ELEMENTS.map(el=>{const on=got.includes(el.id);return `<button class="badge-el${on?' on':''}" data-el="${el.id}" aria-pressed="${on}">${ico(el.k)}<span>${el.name}</span>${on?'<i class="bstar" aria-hidden="true">★</i>':''}</button>`}).join('')}</div>
+  <p class="hint">Touche un élément réussi : la gymnaste reçoit son badge dans l’appli.</p>`;
+}
+function vCoachs(){
+  const g=coachGroup; const s=coachNext(g);
+  const tabs=[['appel','✓ Appel'],['prog','🗒️ Programme'],['badges','★ Badges']];
+  return `
+  <h1 class="hello">Espace <span class="script">coachs</span></h1>
+  <div class="filters" role="group" aria-label="Groupe">${Object.keys(GROUPS).map(n=>`<button class="chip" data-cgroup="${n}" aria-pressed="${n===g}">${n} ${stars(GROUPS[n].n)}</button>`).join('')}</div>
+  ${s?`<div class="coach-sess">${dateBlock(s.date)}<div><b>Prochain cours</b><div class="sess-meta tnum">${cap1(fr(s.date,{weekday:'long',day:'numeric',month:'long'}))} · ${hhmm(s.s)} – ${hhmm(s.e)}</div></div></div>`:''}
+  <div class="seg" role="tablist">${tabs.map(([id,l])=>`<button role="tab" data-ctab="${id}" aria-selected="${coachTab===id}">${l}</button>`).join('')}</div>
+  <section class="card coach-card">${!s?'<div class="empty">Pas de cours prévu.</div>':coachTab==='appel'?coachAppel(g,s):coachTab==='prog'?coachProg(g,s):coachBadges(g)}</section>
+  <p class="proto">Aperçu côté coachs · gymnastes et réponses simulées pour la démo</p>`;
+}
+function myBadges(k){
+  const got=badges[`${k.group}|${k.name}`]||[];
+  return `<section class="col"><div class="sh"><h2>Mes badges</h2><span class="pill ok">★ ${got.length} / ${ELEMENTS.length}</span></div>
+    <div class="badges mine">${ELEMENTS.map(el=>{const on=got.includes(el.id);return `<div class="badge-el${on?' on':''}" title="${el.name}">${ico(el.k,'sm')}<span>${el.name}</span>${on?'<i class="bstar" aria-hidden="true">★</i>':''}</div>`}).join('')}</div></section>`;
+}
 /* ================= photos (emplacements d'exemple) ================= */
 const ALBUMS = [
   {id:'cours',name:'Les cours',when:'Cette saison',emoji:'🤸',bg:'linear-gradient(135deg,#722F9D,#9D2E94)',n:9},
@@ -902,6 +1033,22 @@ document.addEventListener('click',e=>{
   else if('chan' in d){ chan=d.chan||null; if(chan){seenCh[chan]=1;store.set('seen',seenCh)} render(); focusChat(); }
   else if(d.quick){ sendMsg(d.quick); }
   else if(d.heart){ const r=b.getBoundingClientRect(); hearts[d.heart]=!hearts[d.heart]; store.set('hearts',hearts); const y=document.getElementById('msgs')?.scrollTop; render(); const m=document.getElementById('msgs'); if(m&&y!=null) m.scrollTop=y; if(hearts[d.heart]) burst(r); }
+  else if(d.cgroup){ coachGroup=d.cgroup; store.set('cgroup',coachGroup); draft=null; picker=false; render(); }
+  else if(d.ctab){ coachTab=d.ctab; store.set('ctab',coachTab); picker=false; render(); }
+  else if(d.call){ const g=coachGroup,s=coachNext(g),gym=roster(g).find(x=>x.name===d.call); const k=callKey(g,s,gym); appel[k]=!isHere(g,s,gym); delete appelDone[`${g}|${s.key}`]; store.set('appel',appel); store.set('appelDone',appelDone); render(); }
+  else if('appeldone' in d){ const g=coachGroup,s=coachNext(g); const r=b.getBoundingClientRect(); appelDone[`${g}|${s.key}`]=1; store.set('appelDone',appelDone); render(); burst(r); toast('✓ Appel enregistré'); }
+  else if(d.min){ const [i,v]=d.min.split('|').map(Number); draft.steps[i][1]=Math.max(5,Math.min(90,draft.steps[i][1]+v)); render(); }
+  else if(d.mv){ const [i,v]=d.mv.split('|').map(Number); const st=draft.steps; [st[i],st[i+v]]=[st[i+v],st[i]]; render(); }
+  else if(d.rm){ if(draft.steps.length>1){ draft.steps.splice(+d.rm,1); render(); } }
+  else if('picker' in d){ picker=true; render(); }
+  else if(d.addstep){ draft.steps.push([d.addstep,10,'']); picker=false; render(); }
+  else if(d.preview){ const g=coachGroup; const save0=customPlans[draft.key]; customPlans[draft.key]={theme:draft.theme,defi:draft.defi,steps:draft.steps.map(x=>[...x])};
+    const kk=kids.find(x=>x.group===g)||{id:'tmp',name:'Gymnaste',group:g}; const prevK=activeKid, prevKids=kids; if(!kids.includes(kk)){kids=[...kids,kk]} activeKid=kk.id; planSheet(d.preview); activeKid=prevK; kids=prevKids;
+    if(save0) customPlans[draft.key]=save0; else delete customPlans[draft.key]; }
+  else if('publish' in d){ const r=b.getBoundingClientRect(); customPlans[draft.key]={theme:draft.theme||'Mission gym',defi:draft.defi,steps:draft.steps.map(x=>[...x])}; store.set('plans',customPlans); render(); burst(r); toast('📣 Programme envoyé aux familles'); }
+  else if(d.bgym){ badgeGym=d.bgym; render(); }
+  else if(d.el){ const key=`${coachGroup}|${badgeGym}`; const arr=badges[key]=badges[key]||[]; const r=b.getBoundingClientRect(); const i=arr.indexOf(d.el); if(i>-1) arr.splice(i,1); else arr.push(d.el); store.set('badges',badges); render(); if(i===-1){burst(r);toast(`★ Badge gagné par ${badgeGym} !`)} }
+  else if('mybadges' in d){ openSheet(myBadges(kid())+'<button class="btn big" data-close>Bravo ! 🎉</button>'); }
   else if(d.album){ album=d.album; render(); }
   else if(d.ph){ openLb(+d.ph); }
   else if(d.lb){ const n=albumPhotos().length; openLb((lbIndex+ +d.lb+n)%n); }
@@ -918,6 +1065,10 @@ document.addEventListener('click',e=>{
   else if(d.copy){ const t=document.getElementById(d.copy).textContent; const done=()=>toast('Adresse copiée');
     try{navigator.clipboard.writeText(t).then(done,()=>{getSelection().selectAllChildren(document.getElementById(d.copy));toast('Adresse sélectionnée, copie-la')})}catch(err){getSelection().selectAllChildren(document.getElementById(d.copy))} }
   else if(d.toast){ toast(d.toast); }
+});
+document.addEventListener('input',e=>{
+  const k=e.target.dataset&&e.target.dataset.draft; if(!k||!draft) return;
+  if(k==='theme') draft.theme=e.target.value; else if(k==='defi') draft.defi=e.target.value; else { draft.steps[+k.split('|')[1]][2]=e.target.value; }
 });
 document.addEventListener('change',e=>{
   if(e.target.id==='docIn'&&e.target.files.length){ const r=document.querySelector(`[data-send="${pendingDoc}"]`)?.getBoundingClientRect();
