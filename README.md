@@ -17,7 +17,7 @@ Prototype cliquable d'une application mobile et desktop pour l'Académie Gymniqu
 - **Ma gymnaste** : l'enfant personnalise sa gymnaste (peau, cheveux, justaucorps), reprise dans tous les pictos
 - **Espace coachs** (protégé par un code ; en démo, n'importe quel code à 4 chiffres fonctionne) : liste d'appel, création du programme du cours à partir d'une banque d'exercices par agrès, avec la liste du matériel à sortir (publié aux familles) et badges de progression
 
-- **Défis à la maison** : le coach fixe 2-3 objectifs par gymnaste ; l'enfant reçoit des cartes d'exercices sans danger (souplesse, équilibre, gainage) et gagne un tampon chaque jour
+- **Défis à la maison** : le coach fixe 2-3 objectifs par gymnaste ; l'enfant reçoit des cartes d'exercices sans danger (souplesse, équilibre, gainage) avec un tuto en images étape par étape, et gagne un tampon chaque jour
 - **Playlist du cours** : les filles proposent et votent pour leurs chansons (mode Enfant), le coach valide et lance le top 5
 - **Mode sombre** : bouton 🌙 / ☀️ sur l'accueil, ou Auto / Clair / Sombre dans Club → Infos
 
