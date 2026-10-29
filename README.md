@@ -13,7 +13,7 @@ Prototype cliquable d'une application mobile et desktop pour l'Académie Gymniqu
 - **Photos** : albums des cours, des stages et des fêtes
 - **Docs** : documents à fournir au club et documents du club
 - **Ma gymnaste** : l'enfant personnalise sa gymnaste (peau, cheveux, justaucorps), reprise dans tous les pictos
-- **Espace coachs** (protégé par un code, démo : 2026) : liste d'appel, création du programme du cours (publié aux familles) et badges de progression
+- **Espace coachs** (protégé par un code ; en démo, n'importe quel code à 4 chiffres fonctionne) : liste d'appel, création du programme du cours (publié aux familles) et badges de progression
 
 ## À savoir
 Il s'agit d'une ébauche de démonstration. Les horaires 2026-2027 sont réels. Les événements, les messages, les photos et les documents sont des exemples. Les réponses restent enregistrées sur l'appareil de la personne qui teste.
