@@ -18,7 +18,7 @@ img{max-width:100%}
 :root{
   --bg:#F5F1F8; --surface:#FFFFFF; --surface-2:#EFE8F5; --line:#E3D9EC;
   --ink:#16112A; --muted:#6C6378;
-  --violet:#722F9D; --violet-soft:#EADCF5; --cyan:#1FA3B0; --cyan-glow:#5EE3E8; --magenta:#9D2E94; --star:#FFCC00;
+  --violet:#722F9D; --violet-soft:#EADCF5; --cyan:#1FA3B0; --cyan-glow:#5EE3E8; --brand:#722F9D; --brand-2:#9D2E94; --magenta:#9D2E94; --star:#FFCC00;
   --ok:#17875E; --ok-soft:#DDF3E9; --no:#C8394F; --no-soft:#FBE3E7; --wait:#9A6A00; --wait-soft:#FFF3CC;
   --night:#0B1E25; --night-2:#2A1446; --on-night:#F7F1FF;
   --f-display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
@@ -29,7 +29,7 @@ img{max-width:100%}
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
   --bg:#0A161C; --surface:#12242C; --surface-2:#1A2F39; --line:#24404B;
   --ink:#F2EEF7; --muted:#A49CB2;
-  --violet:#C08AE8; --violet-soft:#2E2140; --magenta:#E77AD9; --cyan:#5EE3E8; --cyan-glow:#5EE3E8;
+  --violet:#C08AE8; --violet-soft:#2E2140; --magenta:#E77AD9; --cyan:#5EE3E8; --cyan-glow:#5EE3E8; --brand:#8A3FC8; --brand-2:#B33AA8;
   --ok:#4FD39C; --ok-soft:#123A2C; --no:#FF8094; --no-soft:#3E1C25; --wait:#F2C94C; --wait-soft:#3A2F12;
   --night:#06121A; --night-2:#2A1446; --on-night:#F7F1FF;
   color-scheme:dark;
@@ -37,7 +37,7 @@ img{max-width:100%}
 :root[data-theme="dark"]{
   --bg:#0A161C; --surface:#12242C; --surface-2:#1A2F39; --line:#24404B;
   --ink:#F2EEF7; --muted:#A49CB2;
-  --violet:#C08AE8; --violet-soft:#2E2140; --magenta:#E77AD9; --cyan:#5EE3E8; --cyan-glow:#5EE3E8;
+  --violet:#C08AE8; --violet-soft:#2E2140; --magenta:#E77AD9; --cyan:#5EE3E8; --cyan-glow:#5EE3E8; --brand:#8A3FC8; --brand-2:#B33AA8;
   --ok:#4FD39C; --ok-soft:#123A2C; --no:#FF8094; --no-soft:#3E1C25; --wait:#F2C94C; --wait-soft:#3A2F12;
   --night:#06121A; --night-2:#2A1446; --on-night:#F7F1FF;
   color-scheme:dark;
@@ -143,7 +143,7 @@ h1,h2,h3{font-family:var(--f-display);line-height:1.1;text-wrap:balance;margin:0
 .hero .reasons span{color:rgba(247,241,255,.72)}
 .reason{border:1.5px solid var(--line);background:transparent;border-radius:999px;padding:4px 11px;font-weight:700;font-size:13px}
 .hero .reason{border-color:rgba(255,255,255,.3);color:#fff}
-.reason[aria-pressed="true"]{background:var(--violet);border-color:var(--violet);color:#fff}
+.reason[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:#fff}
 
 /* ---------- grids ---------- */
 .two{display:grid;gap:22px;grid-template-columns:1fr}
@@ -180,7 +180,7 @@ h1,h2,h3{font-family:var(--f-display);line-height:1.1;text-wrap:balance;margin:0
 .sum span{font-size:12px;font-weight:800;color:var(--muted)}
 .sum.ok b{color:var(--ok)} .sum.no b{color:var(--no)} .sum.wait b{color:var(--wait)}
 .bulk{display:flex;gap:8px;flex-wrap:wrap}
-.btn{border-radius:999px;padding:10px 18px;font-weight:800;border:1.5px solid var(--violet);background:var(--violet);color:#fff}
+.btn{border-radius:999px;padding:10px 18px;font-weight:800;border:1.5px solid var(--brand);background:var(--brand);color:#fff}
 .btn.ghost{background:transparent;color:var(--violet)}
 .btn.sm{padding:7px 14px;font-size:13px}
 .btn:disabled{opacity:.5;cursor:default}
@@ -418,7 +418,7 @@ fieldset{border:0;padding:0;margin:0}
 .who{font-size:12px;font-weight:800;color:var(--muted);padding-left:4px}
 .coach-tag{background:linear-gradient(90deg,var(--violet),var(--cyan));color:#fff;border-radius:6px;padding:0 6px;font-size:10px;letter-spacing:.04em;text-transform:uppercase}
 .bub{background:var(--surface);border:1px solid var(--line);padding:9px 13px;border-radius:18px 18px 18px 6px;font-size:15px;overflow-wrap:anywhere}
-.msg.me .bub{background:linear-gradient(135deg,var(--violet),var(--magenta));border:0;color:#fff;border-radius:18px 18px 6px 18px}
+.msg.me .bub{background:linear-gradient(135deg,var(--brand),var(--brand-2));border:0;color:#fff;border-radius:18px 18px 6px 18px}
 .msg.pin .bub{background:var(--wait-soft);border-color:transparent}
 .m-meta{display:flex;gap:8px;align-items:center;font-size:11px;color:var(--muted);padding:0 4px}
 .heart{border:0;background:none;color:var(--muted);font-weight:800;font-size:12px;padding:2px 4px;border-radius:999px}
@@ -431,7 +431,7 @@ fieldset{border:0;padding:0;margin:0}
 .quick::-webkit-scrollbar{display:none}
 .composer{display:flex;gap:8px;padding:10px 12px 12px}
 .composer input{flex:1;min-width:0;border:1.5px solid var(--line);border-radius:999px;padding:12px 16px;font:inherit;background:var(--bg);color:var(--ink)}
-.send{width:48px;height:48px;flex:none;border:0;border-radius:50%;background:linear-gradient(135deg,var(--violet),var(--magenta));color:#fff;display:grid;place-items:center}
+.send{width:48px;height:48px;flex:none;border:0;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;display:grid;place-items:center}
 a.brand{text-decoration:none;color:var(--ink)}
 
 
@@ -484,7 +484,7 @@ a.brand{text-decoration:none;color:var(--ink)}
 /* accueil tableau de bord */
 .next{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:14px;box-shadow:0 4px 18px rgba(60,30,100,.06)}
 .next-top{display:flex;gap:14px;align-items:center}
-.next-top .date{width:64px;flex:none;background:var(--violet);color:#fff}
+.next-top .date{width:64px;flex:none;background:var(--brand);color:#fff}
 .next-top .date small{color:rgba(255,255,255,.8)}
 .next-info{display:flex;flex-direction:column;gap:2px;min-width:0}
 .next-info b{font-family:var(--f-display);font-size:20px;line-height:1.2}
@@ -552,7 +552,7 @@ body.kidmode .tabbar,body.kidmode .side{display:none}
 body.kidmode .shell{grid-template-columns:1fr}
 body.kidmode .main{padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))}
 body.kidmode .wrap{max-width:720px}
-.kid-top{display:flex;justify-content:flex-end}
+.kid-top{display:flex;justify-content:flex-end;gap:8px}
 .parent-btn{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 14px;font-weight:800;font-size:13px}
 .kid-hero{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
 .me{position:relative;border:0;background:none;padding:0}
@@ -560,7 +560,7 @@ body.kidmode .wrap{max-width:720px}
 .me .ico.huge{animation:bob 2.6s ease-in-out infinite}
 @keyframes bob{50%{transform:translateY(-6px) rotate(-2deg)}}
 .me-edit{position:absolute;right:4px;bottom:8px;background:var(--surface);border-radius:50%;width:36px;height:36px;display:grid;place-items:center;box-shadow:0 2px 8px rgba(0,0,0,.15)}
-.countdown{display:flex;flex-direction:column;align-items:center;background:linear-gradient(135deg,var(--violet),var(--magenta));color:#fff;border-radius:22px;padding:12px 26px}
+.countdown{display:flex;flex-direction:column;align-items:center;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;border-radius:22px;padding:12px 26px}
 .countdown b{font-family:var(--f-display);font-size:26px}
 .countdown span{font-weight:700;opacity:.9}
 .kid-card{background:var(--surface);border:1px solid var(--line);border-radius:26px;padding:18px;display:flex;flex-direction:column;gap:14px}
@@ -590,6 +590,14 @@ body.kidmode .wrap{max-width:720px}
 .rsvp.demo svg{width:18px;height:18px}
 
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* apparence */
+.theme-btn{width:44px;height:44px;flex:none;border-radius:50%;border:1.5px solid var(--line);background:var(--surface);font-size:20px;display:grid;place-items:center}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.appear{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--surface-2);padding:4px;border-radius:14px}
+.appear button{border:0;background:transparent;border-radius:10px;padding:10px 4px;font-weight:800;font-size:14px;color:var(--muted)}
+.appear button[aria-pressed="true"]{background:var(--surface);color:var(--violet);box-shadow:0 2px 8px rgba(40,20,70,.12)}
+html{transition:background-color .25s}
 </style>
 </head>
 <body>
@@ -801,7 +809,7 @@ function vAccueil(){
   const p=next&&planFor(k.group,next);
   const tile=(href,attr,n,label,state,ic)=>`<${href?`a href="${href}"`:'button'} ${attr} class="tile ${state}"><span class="tile-ic" aria-hidden="true">${ic}</span><b class="tnum">${n}</b><span>${label}</span></${href?'a':'button'}>`;
   return `
-  <div class="topbar"><a class="brand" href="#club" aria-label="Le club"><img class="logo" src="${LOGO}" alt="" width="44" height="44"><div><b>Bonjour 👋</b><small>Académie Gymnique Méditerranée</small></div></a><button class="kidmode-btn" data-kidmode="1"><span class="ico sm" style="--c:${APPARATUS.echauf.col}"><svg viewBox="0 0 64 64">${APPARATUS.echauf.svg}</svg></span>Mode ${esc(kid().name)}</button></div>
+  <div class="topbar"><a class="brand" href="#club" aria-label="Le club"><img class="logo" src="${LOGO}" alt="" width="44" height="44"><div><b>Bonjour 👋</b><small>Académie Gymnique Méditerranée</small></div></a><div class="topbar-right"><button class="theme-btn" data-theme-toggle aria-label="${isDark()?'Passer en mode clair':'Passer en mode sombre'}">${isDark()?'☀️':'🌙'}</button><button class="kidmode-btn" data-kidmode="1"><span class="ico sm" style="--c:${APPARATUS.echauf.col}"><svg viewBox="0 0 64 64">${APPARATUS.echauf.svg}</svg></span>Mode ${esc(kid().name)}</button></div></div>
   ${kidChips()}
   ${next?`<section class="next" aria-label="Prochain cours">
     <div class="next-top">${dateBlock(next.date)}<div class="next-info"><span class="eyebrow">Prochain cours${hol?' · après les vacances':''}</span>
@@ -864,6 +872,7 @@ function vClub(){
       <a href="https://instagram.com/academie.gymnique.mediterranee" target="_blank" rel="noopener">📸 Instagram <span>↗</span></a>
       <a href="https://facebook.com/AcademieGymniqueMediterranee/" target="_blank" rel="noopener">👍 Facebook <span>↗</span></a></div></section>
     <section class="card"><a class="coach-link" href="#coachs"><span class="ev-ic">🔒</span><span>Accès coachs<br><small class="sess-meta">Réservé à l’équipe encadrante</small></span></a></section>
+    <section class="card"><h3>Apparence</h3><div class="appear" role="group" aria-label="Apparence">${[['auto','📱 Auto'],['light','☀️ Clair'],['dark','🌙 Sombre']].map(([v,l])=>`<button data-theme-set="${v}" aria-pressed="${theme===v}">${l}</button>`).join('')}</div><p class="hint">Auto suit le réglage du téléphone.</p></section>
     <section class="card"><button class="coach-link" data-replay style="border:0;background:none;padding:0;text-align:left"><span class="ev-ic">👋</span><span>Revoir la présentation<br><small class="sess-meta">Les 4 écrans du premier lancement</small></span></button></section>
     <section class="card slogan"><span class="script">La Gym passionnément</span><span class="motto">Passion · Élégance · Dépassement</span><small>Club affilié FFGym n° 93083.123</small></section>
   </div>`;
@@ -1122,6 +1131,10 @@ function evSheet(id){
 
 /* ================= rendu & événements ================= */
 function route(){return (location.hash||'#accueil').slice(1)}
+let theme=store.get('theme','auto');
+function isDark(){return theme==='dark'||(theme==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches)}
+function applyTheme(){const r=document.documentElement; if(theme==='auto') r.removeAttribute('data-theme'); else r.setAttribute('data-theme',theme);}
+try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(theme==='auto')render()})}catch(e){}
 let clubSeg=store.get('clubSeg','photos'), kidMode=store.get('kidMode',false);
 let onb=store.get('onb2',false)?null:{step:0,name:kids[0].name,group:kids[0].group};
 function vHub(seg){
@@ -1133,7 +1146,7 @@ function vHub(seg){
   ${strip(seg==='photos'?vPhotos():seg==='docs'?vDocs():vClub())}`;
 }
 function render(){
-  applyLook();
+  applyTheme(); applyLook();
   document.body.classList.toggle('kidmode',!!kidMode);
   if(kidMode){ document.getElementById('view').innerHTML=vKid(); renderOnb(); return; }
   const raw=route(); const known=[...TABS.map(t=>t[0]),'photos','docs','coachs'];
@@ -1154,7 +1167,7 @@ function vKid(){
   const days=next?Math.round((next.date-today)/864e5):null;
   const when=days===0?'C’est aujourd’hui !':days===1?'C’est demain !':`Encore ${days} dodos !`;
   const p=next&&planFor(k.group,next); const got=badges[`${k.group}|${k.name}`]||[];
-  return `<div class="kid-top"><button class="parent-btn" data-kidmode="0">👩 Parent</button></div>
+  return `<div class="kid-top"><button class="theme-btn" data-theme-toggle aria-label="Changer de mode">${isDark()?'☀️':'🌙'}</button><button class="parent-btn" data-kidmode="0">👩 Parent</button></div>
   <div class="kid-hero">
     <button class="me" data-lookme aria-label="Changer ma gymnaste"><span class="ico huge" style="--c:${APPARATUS.echauf.col}"><svg viewBox="0 0 64 64">${APPARATUS.echauf.svg}</svg></span><span class="me-edit">✏️</span></button>
     <h1 class="hello">Salut <span class="script">${esc(k.name)}</span> !</h1>
@@ -1240,6 +1253,8 @@ document.addEventListener('click',e=>{
   else if(d.kidmode){ kidMode=d.kidmode==='1'; store.set('kidMode',kidMode); window.scrollTo(0,0); render(); if(kidMode) toast(`🤸 Mode ${kid().name}`); }
   else if('lookme' in d){ lookSheet(); }
   else if('replay' in d){ onb={step:0,name:kid().name,group:kid().group}; renderOnb(); }
+  else if('themeToggle' in d){ theme=isDark()?'light':'dark'; store.set('theme',theme); render(); }
+  else if(d.themeSet){ theme=d.themeSet; store.set('theme',theme); render(); toast(theme==='dark'?'🌙 Mode sombre':theme==='light'?'☀️ Mode clair':'📱 Comme le téléphone'); }
   else if(d.album){ album=d.album; render(); }
   else if(d.ph){ openLb(+d.ph); }
   else if(d.lb){ const n=albumPhotos().length; openLb((lbIndex+ +d.lb+n)%n); }
