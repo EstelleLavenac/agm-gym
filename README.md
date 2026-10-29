@@ -5,6 +5,7 @@ Prototype cliquable d'une application mobile et desktop pour l'Académie Gymniqu
 **Voir l'appli :** ouvrir `index.html` dans un navigateur, ou la version en ligne via GitHub Pages.
 
 ## Ce que l'appli propose
+- **Trois modes**, toujours visibles en haut : Parent (violet), Enfant (rose), Coach (turquoise, protégé par un code)
 - **Premier lancement guidé** : 4 écrans pour ajouter son enfant, créer sa gymnaste et comprendre le Oui / Non
 - **Mode Enfant** : sa gymnaste, le compte à rebours avant le cours, sa mission, son défi et ses badges
 - **Accueil** : un tableau de bord simple — prochain cours avec réponse Oui / Non, cours à répondre, messages, documents, badges

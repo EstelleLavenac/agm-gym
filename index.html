@@ -628,6 +628,30 @@ body.kidmode .wrap{max-width:720px}
 .gear-row small{margin-left:auto;color:var(--muted);font-weight:700}
 .gear-row:has(input:checked) span{text-decoration:line-through;color:var(--muted)}
 
+
+/* ===== modes : barre + couleurs ===== */
+.modebar{position:sticky;top:env(safe-area-inset-top,0px);z-index:15;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:4px;border-radius:18px;background:var(--surface);border:1px solid var(--line);box-shadow:0 6px 18px rgba(30,15,50,.08)}
+.modebar button{display:flex;align-items:center;justify-content:center;gap:8px;border:0;background:transparent;border-radius:14px;padding:8px 6px;font-weight:800;font-size:14px;color:var(--muted);min-height:46px}
+.modebar .m-ic{font-size:18px}
+.modebar .av{width:26px;height:26px}
+.modebar .m-parent[aria-selected="true"]{background:#722F9D;color:#fff}
+.modebar .m-kid[aria-selected="true"]{background:linear-gradient(135deg,#D63A9E,#F2994A);color:#fff}
+.modebar .m-coach[aria-selected="true"]{background:#0F6E78;color:#fff}
+body.kidmode{--bg:#FFF2F8;--surface-2:#FCE3F0;--line:#F5CDE2;--violet:#C02A8B;--violet-soft:#FCE0F0;--brand:#D63A9E;--brand-2:#F2994A;--magenta:#E04E2E}
+body.coachmode{--bg:#EDF6F7;--surface-2:#DDEEF0;--line:#C9E1E4;--violet:#0F6E78;--violet-soft:#D7EEF0;--brand:#0F6E78;--brand-2:#1FA3B0;--magenta:#0F6E78}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) body.kidmode{--bg:#1C0D18;--surface:#2A1424;--surface-2:#3A1B32;--line:#4F2645;--violet:#FF8FD1;--violet-soft:#3E1A35;--brand:#C8338F;--brand-2:#D9762F;--magenta:#FFA77A}
+  :root:not([data-theme="light"]) body.coachmode{--bg:#071719;--surface:#0E2427;--surface-2:#143236;--line:#1E4246;--violet:#5ED6E0;--violet-soft:#123A3E;--brand:#13808B;--brand-2:#1FA3B0;--magenta:#5ED6E0}
+}
+:root[data-theme="dark"] body.kidmode{--bg:#1C0D18;--surface:#2A1424;--surface-2:#3A1B32;--line:#4F2645;--violet:#FF8FD1;--violet-soft:#3E1A35;--brand:#C8338F;--brand-2:#D9762F;--magenta:#FFA77A}
+:root[data-theme="dark"] body.coachmode{--bg:#071719;--surface:#0E2427;--surface-2:#143236;--line:#1E4246;--violet:#5ED6E0;--violet-soft:#123A3E;--brand:#13808B;--brand-2:#1FA3B0;--magenta:#5ED6E0}
+body.coachmode .tabbar,body.coachmode .side{display:none}
+body.coachmode .shell{grid-template-columns:1fr}
+body.coachmode .main{padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))}
+body.coachmode .wrap{max-width:820px}
+body.kidmode .modebar{border-color:#F5CDE2}
+.coach-bar{display:flex;justify-content:space-between;align-items:center}
+
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* apparence */
@@ -848,7 +872,7 @@ function vAccueil(){
   const p=next&&planFor(k.group,next);
   const tile=(href,attr,n,label,state,ic)=>`<${href?`a href="${href}"`:'button'} ${attr} class="tile ${state}"><span class="tile-ic" aria-hidden="true">${ic}</span><b class="tnum">${n}</b><span>${label}</span></${href?'a':'button'}>`;
   return `
-  <div class="topbar"><a class="brand" href="#club" aria-label="Le club"><img class="logo" src="${LOGO}" alt="" width="44" height="44"><div><b>Bonjour 👋</b><small>Académie Gymnique Méditerranée</small></div></a><div class="topbar-right"><button class="theme-btn" data-theme-toggle aria-label="${isDark()?'Passer en mode clair':'Passer en mode sombre'}">${isDark()?'☀️':'🌙'}</button><button class="kidmode-btn" data-kidmode="1"><span class="ico sm" style="--c:${APPARATUS.echauf.col}"><svg viewBox="0 0 64 64">${APPARATUS.echauf.svg}</svg></span>Mode ${esc(kid().name)}</button></div></div>
+  <div class="topbar"><a class="brand" href="#club" aria-label="Le club"><img class="logo" src="${LOGO}" alt="" width="44" height="44"><div><b>Bonjour 👋</b><small>Académie Gymnique Méditerranée</small></div></a><div class="topbar-right"><button class="theme-btn" data-theme-toggle aria-label="${isDark()?'Passer en mode clair':'Passer en mode sombre'}">${isDark()?'☀️':'🌙'}</button></div></div>
   ${kidChips()}
   ${next?`<section class="next" aria-label="Prochain cours">
     <div class="next-top">${dateBlock(next.date)}<div class="next-info"><span class="eyebrow">Prochain cours${hol?' · après les vacances':''}</span>
@@ -994,7 +1018,7 @@ function vCoachs(){
   const g=coachGroup; const s=coachNext(g);
   const tabs=[['appel','✓ Appel'],['prog','🗒️ Prog.'],['badges','★ Badges'],['music','🎵 Musique']];
   return `
-  <div class="coach-bar"><span class="pill ok">🔒 Mode coach</span><button class="link" data-coachout>Quitter</button></div>
+  <div class="coach-bar"><span class="sess-meta">Connecté·e en coach</span><button class="link" data-coachout>🔒 Verrouiller</button></div>
   <h1 class="hello">Espace <span class="script">coachs</span></h1>
   <div class="filters" role="group" aria-label="Groupe">${Object.keys(GROUPS).map(n=>`<button class="chip" data-cgroup="${n}" aria-pressed="${n===g}">${n} ${stars(GROUPS[n].n)}</button>`).join('')}</div>
   ${s?`<div class="coach-sess">${dateBlock(s.date)}<div><b>Prochain cours</b><div class="sess-meta tnum">${cap1(fr(s.date,{weekday:'long',day:'numeric',month:'long'}))} · ${hhmm(s.s)} – ${hhmm(s.e)}</div></div></div>`:''}
@@ -1255,6 +1279,14 @@ function applyTheme(){const r=document.documentElement; if(theme==='auto') r.rem
 try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(theme==='auto')render()})}catch(e){}
 let clubSeg=store.get('clubSeg','photos'), kidMode=store.get('kidMode',false);
 let onb=store.get('onb2',false)?null:{step:0,name:kids[0].name,group:kids[0].group};
+function modeBar(cur){
+  const k=kid();
+  return `<div class="modebar" role="tablist" aria-label="Mode">
+    <button role="tab" class="m-parent" data-mode="parent" aria-selected="${cur==='parent'}"><span class="m-ic">👩</span><span>Parent</span></button>
+    <button role="tab" class="m-kid" data-mode="kid" aria-selected="${cur==='kid'}"><span class="av face">${faceSvg(look(k))}</span><span>${esc(k.name)}</span></button>
+    <button role="tab" class="m-coach" data-mode="coach" aria-selected="${cur==='coach'}"><span class="m-ic">${cur==='coach'&&coachOn?'🔓':'🔒'}</span><span>Coach</span></button>
+  </div>`;
+}
 function vHub(seg){
   const segs=[['photos','📸 Photos'],['docs','📄 Docs'],['infos','💜 Infos']];
   const strip=h=>h.replace(/<div class="club-head">[\s\S]*?<\/div>/,'').replace(/<h1 class="hello">[\s\S]*?<\/h1>/,'');
@@ -1265,17 +1297,19 @@ function vHub(seg){
 }
 function render(){
   applyTheme(); applyLook();
-  document.body.classList.toggle('kidmode',!!kidMode);
-  if(kidMode){ document.getElementById('view').innerHTML=vKid(); renderOnb(); return; }
   const raw=route(); const known=[...TABS.map(t=>t[0]),'photos','docs','coachs'];
   const r=known.includes(raw)?raw:'accueil';
-  const navId=['photos','docs','club','coachs'].includes(r)?'club':r;
+  const mode=kidMode?'kid':r==='coachs'?'coach':'parent';
+  document.body.classList.toggle('kidmode',mode==='kid');
+  document.body.classList.toggle('coachmode',mode==='coach');
+  if(mode==='kid'){ document.getElementById('view').innerHTML=modeBar('kid')+vKid(); renderOnb(); return; }
+  const navId=['photos','docs','club'].includes(r)?'club':r;
   const unread=Object.values(CHANNELS).reduce((a,c)=>a+(seenCh[c.id]?0:c.unread),0);
   const nav=TABS.map(([id,l,ic])=>`<a class="tab" href="#${id}" ${id===navId?'aria-current="page"':''}><span class="tab-ic">${ic}${id==='messages'&&unread?`<i class="badge">${unread}</i>`:''}</span><span>${l}</span></a>`).join('');
   document.getElementById('sideNav').innerHTML=nav; document.getElementById('tabNav').innerHTML=nav;
   const views={accueil:vAccueil,planning:vPlanning,agenda:vAgenda,messages:vMessages,coachs:vCoachs,
     photos:()=>vHub('photos'),docs:()=>vHub('docs'),club:()=>vHub('infos')};
-  document.getElementById('view').innerHTML=views[r]();
+  document.getElementById('view').innerHTML=modeBar(mode)+views[r]();
   renderOnb();
 }
 
@@ -1285,7 +1319,7 @@ function vKid(){
   const days=next?Math.round((next.date-today)/864e5):null;
   const when=days===0?'C’est aujourd’hui !':days===1?'C’est demain !':`Encore ${days} dodos !`;
   const p=next&&planFor(k.group,next); const got=badges[`${k.group}|${k.name}`]||[];
-  return `<div class="kid-top"><button class="theme-btn" data-theme-toggle aria-label="Changer de mode">${isDark()?'☀️':'🌙'}</button><button class="parent-btn" data-kidmode="0">👩 Parent</button></div>
+  return `<div class="kid-top"><button class="theme-btn" data-theme-toggle aria-label="Changer de mode">${isDark()?'☀️':'🌙'}</button></div>
   <div class="kid-hero">
     <button class="me" data-lookme aria-label="Changer ma gymnaste"><span class="ico huge" style="--c:${APPARATUS.echauf.col}"><svg viewBox="0 0 64 64">${APPARATUS.echauf.svg}</svg></span><span class="me-edit">✏️</span></button>
     <h1 class="hello">Salut <span class="script">${esc(k.name)}</span> !</h1>
@@ -1366,7 +1400,7 @@ document.addEventListener('click',e=>{
   else if(d.pin){ if(d.pin==='⌫'){pin=pin.slice(0,-1)} else if(pin.length<4){pin+=d.pin} 
     if(pin.length===4){ if(pin.length===4){ const r=b.getBoundingClientRect(); coachOn=true; pin=''; render(); burst(r); toast('👋 Bienvenue coach !'); return; } render(); setTimeout(()=>{pin='';if(route()==='coachs'&&!coachOn)render()},700); toast('Code incorrect'); return; }
     render(); }
-  else if('coachout' in d){ coachOn=false; pin=''; location.hash='club'; toast('🔒 Espace coachs verrouillé'); }
+  else if('coachout' in d){ coachOn=false; pin=''; location.hash='accueil'; toast('🔒 Espace coachs verrouillé'); }
   else if(d.onb){ if(d.onb==='back'){onb.step--} else if(d.onb==='skip'||(d.onb==='next'&&onb.step===3)){ const k=kids[0]; if(onb.name.trim()) k.name=onb.name.trim(); k.group=onb.group; activeKid=k.id; save(); store.set('onb2',true); const fin=d.onb==='next'; onb=null; location.hash='accueil'; render(); if(fin){burst(b.getBoundingClientRect());toast(`🎉 Bienvenue ${kids[0].name} !`)} return; } else {onb.step++} renderOnb(); }
   else if(d.onbgroup){ onb.group=d.onbgroup; renderOnb(); }
   else if(d.kidmode){ kidMode=d.kidmode==='1'; store.set('kidMode',kidMode); window.scrollTo(0,0); render(); if(kidMode) toast(`🤸 Mode ${kid().name}`); }
@@ -1380,6 +1414,10 @@ document.addEventListener('click',e=>{
   else if('bank' in d){ bankAdded=0; bankSheet(); }
   else if(d.bankf){ bankF=d.bankf; bankSheet(); }
   else if(d.addex){ const [k,m,...n]=d.addex.split('|'); draft.steps.push([k,+m,n.join('|')]); bankAdded++; render(); bankSheet(); toast(`+ ${n.join('|')}`); }
+  else if(d.mode){ const m=d.mode; kidMode=m==='kid'; store.set('kidMode',kidMode); window.scrollTo(0,0);
+    if(m==='coach'){ if(location.hash!=='#coachs') location.hash='coachs'; else render(); }
+    else { if(route()==='coachs') location.hash='accueil'; else render(); }
+    toast(m==='kid'?`🤸 Mode ${kid().name}`:m==='coach'?'🔒 Espace coachs':'👩 Mode parent'); }
   else if(d.album){ album=d.album; render(); }
   else if(d.ph){ openLb(+d.ph); }
   else if(d.lb){ const n=albumPhotos().length; openLb((lbIndex+ +d.lb+n)%n); }
