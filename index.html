@@ -610,6 +610,24 @@ body.kidmode .wrap{max-width:720px}
 .mini-pl{display:flex;flex-direction:column;gap:4px;padding:12px 14px;border-radius:16px;background:var(--surface-2);font-size:14px}
 .mini-pl small{color:var(--muted)}
 
+
+/* banque d'exercices */
+.bank-f .chip.ic{display:flex;align-items:center;gap:6px;padding:4px 12px 4px 4px}
+.bank-f .ico.sm{width:26px;height:26px}
+.bank{display:flex;flex-direction:column;gap:6px;max-height:44vh;overflow-y:auto;padding-right:2px}
+.bank-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:14px;background:var(--surface-2)}
+.add-ex{width:38px;height:38px;flex:none;border-radius:50%;border:0;background:var(--brand);color:#fff;font-size:22px;font-weight:800;line-height:1}
+.ex-form{display:flex;flex-direction:column;gap:8px;padding:12px;border:1.5px dashed var(--line);border-radius:16px}
+.ex-fields{display:flex;gap:8px;flex-wrap:wrap}
+.ex-fields input{flex:2;min-width:140px}
+.ex-fields select{flex:1;min-width:110px}
+.ex-fields input,.ex-fields select{border:1.5px solid var(--line);border-radius:10px;padding:10px;font:inherit;background:var(--bg);color:var(--ink)}
+.gear{display:flex;flex-direction:column;gap:6px;padding:12px 14px;border-radius:16px;background:var(--surface-2)}
+.gear-row{display:flex;align-items:center;gap:10px;font-weight:700}
+.gear-row input{width:20px;height:20px;accent-color:var(--brand)}
+.gear-row small{margin-left:auto;color:var(--muted);font-weight:700}
+.gear-row:has(input:checked) span{text-decoration:line-through;color:var(--muted)}
+
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* apparence */
@@ -946,7 +964,9 @@ function coachProg(g,s){
     ${ico(k)}<div class="st-main"><div class="row"><b>${APPARATUS[k].name}</b><div class="stepper sm"><button data-min="${i}|-5" aria-label="Moins 5 minutes">−</button><b class="tnum">${m}</b><button data-min="${i}|5" aria-label="Plus 5 minutes">+</button></div></div>
     <input data-draft="txt|${i}" value="${esc(txt)}" maxlength="40" aria-label="Consigne pour ${APPARATUS[k].name}" placeholder="Consigne courte"></div>
     <div class="st-tools"><button data-mv="${i}|-1" aria-label="Monter" ${i?'':'disabled'}>↑</button><button data-mv="${i}|1" aria-label="Descendre" ${i<draft.steps.length-1?'':'disabled'}>↓</button><button data-rm="${i}" aria-label="Supprimer">✕</button></div></li>`).join('')}</ol>
-  ${picker?`<div class="pick">${Object.keys(APPARATUS).map(k=>`<button data-addstep="${k}">${ico(k)}<span>${APPARATUS[k].name}</span></button>`).join('')}</div>`:`<button class="upload" data-picker>+ Ajouter une étape</button>`}
+  <div class="bulk"><button class="btn" data-bank style="flex:1">📚 Piocher dans la banque</button><button class="btn ghost" data-picker style="flex:1">+ Étape libre</button></div>
+  ${picker?`<div class="pick">${Object.keys(APPARATUS).map(k=>`<button data-addstep="${k}">${ico(k)}<span>${APPARATUS[k].name}</span></button>`).join('')}</div>`:''}
+  <div class="gear"><b>📋 Matériel à sortir</b>${[...new Set(draft.steps.map(x=>x[0]))].map(k=>`<label class="gear-row"><input type="checkbox"><span>${GEAR[k]}</span><small>${APPARATUS[k].name}</small></label>`).join('')}</div>
   <div class="field"><label for="dDefi">Défi du jour ★</label><input id="dDefi" data-draft="defi" value="${esc(draft.defi)}" maxlength="70"></div>
   <div class="bulk"><button class="btn ghost" data-preview="${s.key}">👀 Aperçu enfant</button><button class="btn" data-publish>${pub?'Mettre à jour':'Publier aux familles'}</button></div>
   ${pub?'<p class="hint">✓ Publié : les familles voient ce programme dans « Le programme ».</p>':''}`;
@@ -1150,6 +1170,33 @@ function proposeSheet(){
     <button class="btn big">Envoyer au coach</button></form>`);
 }
 
+
+/* ================= banque d'exercices ================= */
+const BANK={
+  echauf:[['Course autour du praticable',5],['Sauts de grenouille',5],['Corde à sauter',5],['Gainage planche',5],['Parcours de motricité',10]],
+  sol:[['Roulade avant',10],['Roulade arrière',10],['Roue',10],['Poirier contre le mur',10],['Pont',5],['Chandelle',5]],
+  poutre:[['Marche sur pointes',10],['Demi-tour',10],['Saut extension',10],['Équilibre arabesque',5],['Pas chassés',10]],
+  barres:[['Suspension',5],['Balancés',10],['Appui tendu',10],['Tour d’appui',10]],
+  saut:[['Course d’élan',10],['Appel sur le tremplin',10],['Saut groupé',10],['Réception stable',5]],
+  jeu:[['Les statues',10],['Chat perché gym',10],['Relais en équipes',10],['Jacques a dit',5]],
+  etire:[['Grand écart',5],['Pont',5],['Papillon',5],['Respiration',5]],
+};
+const GEAR={echauf:'Cordes à sauter, plots',sol:'Praticable et tapis',poutre:'Poutre basse et tapis',barres:'Barres et tapis de réception',saut:'Tremplin et plinth',jeu:'Ballons et chasubles',etire:'Tapis individuels'};
+let myEx=store.get('myEx',[]), bankF='all', bankAdded=0;
+function bankSheet(){
+  const items=[...Object.entries(BANK).flatMap(([k,l])=>l.map(([n,m])=>({k,n,m,mine:false}))),...myEx.map(x=>({...x,mine:true}))].filter(x=>bankF==='all'||x.k===bankF);
+  const inProg=n=>draft&&draft.steps.some(st=>st[2]===n);
+  openSheet(`<h2>📚 Banque d’exercices</h2>
+  <div class="filters bank-f">${[['all','Tout']].concat(Object.keys(BANK).map(k=>[k,APPARATUS[k].name])).map(([k,l])=>`<button class="chip${k!=='all'?' ic':''}" data-bankf="${k}" aria-pressed="${bankF===k}">${k!=='all'?ico(k,'sm'):''}${l}</button>`).join('')}</div>
+  <div class="bank">${items.map(x=>`<div class="bank-row">${ico(x.k,'sm')}<span class="song-main"><b>${esc(x.n)}</b><small>${APPARATUS[x.k].name} · ${x.m} min${x.mine?' · Mon exercice':''}</small></span>
+    ${inProg(x.n)?'<span class="pill ok">✓ Ajouté</span>':`<button class="add-ex" data-addex="${x.k}|${x.m}|${esc(x.n)}" aria-label="Ajouter ${esc(x.n)}">+</button>`}</div>`).join('')}</div>
+  <form id="exForm" class="ex-form"><b>✏️ Créer mon exercice</b>
+    <div class="ex-fields"><input id="exName" required maxlength="40" placeholder="Nom de l’exercice" aria-label="Nom de l’exercice">
+    <select id="exK" aria-label="Agrès">${Object.keys(BANK).map(k=>`<option value="${k}" ${bankF===k?'selected':''}>${APPARATUS[k].name}</option>`).join('')}</select></div>
+    <button class="btn ghost">Ajouter à ma banque</button></form>
+  <button class="btn big" data-close>${bankAdded?`Terminé · ${bankAdded} ajouté${bankAdded>1?'s':''}`:'Fermer'}</button>`);
+}
+
 /* ================= sheets ================= */
 function openSheet(html){
   document.getElementById('layer').innerHTML=`<div class="scrim" data-close><div class="sheet" role="dialog" aria-modal="true"><button class="x" data-close aria-label="Fermer">✕</button>${html}</div></div>`;
@@ -1330,6 +1377,9 @@ document.addEventListener('click',e=>{
   else if(d.vote){ const r=b.getBoundingClientRect(); myVotes[d.vote]=!myVotes[d.vote]; store.set('votes',myVotes); render(); if(myVotes[d.vote]) burst(r); }
   else if('propose' in d){ proposeSheet(); }
   else if(d.songOk||d.songNo){ const id=d.songOk||d.songNo; const x=groupSongs(coachGroup).find(y=>y.id===id); x.st=d.songOk?'ok':'no'; store.set('songs',songs); render(); toast(d.songOk?`🎵 « ${x.title} » ajoutée !`:'Proposition refusée'); }
+  else if('bank' in d){ bankAdded=0; bankSheet(); }
+  else if(d.bankf){ bankF=d.bankf; bankSheet(); }
+  else if(d.addex){ const [k,m,...n]=d.addex.split('|'); draft.steps.push([k,+m,n.join('|')]); bankAdded++; render(); bankSheet(); toast(`+ ${n.join('|')}`); }
   else if(d.album){ album=d.album; render(); }
   else if(d.ph){ openLb(+d.ph); }
   else if(d.lb){ const n=albumPhotos().length; openLb((lbIndex+ +d.lb+n)%n); }
@@ -1361,6 +1411,8 @@ document.addEventListener('change',e=>{
   toast('📷 Photos ajoutées (sur cet appareil)');
 });
 document.addEventListener('submit',e=>{
+  if(e.target.id==='exForm'){ e.preventDefault(); const n=document.getElementById('exName').value.trim(); if(!n) return; const k=document.getElementById('exK').value;
+    myEx.push({k,n,m:10}); store.set('myEx',myEx); bankF=k; bankSheet(); toast('✏️ Exercice ajouté à ta banque'); return; }
   if(e.target.id==='songForm'){ e.preventDefault(); const t=document.getElementById('sTitle').value.trim(); if(!t) return; const k=kid();
     groupSongs(k.group).push({id:'s'+Date.now(),title:t,artist:document.getElementById('sArtist').value.trim()||'—',by:k.name,v:0,st:'wait'});
     store.set('songs',songs); closeSheet(); render(); toast('🎤 Envoyée au coach !'); return; }
