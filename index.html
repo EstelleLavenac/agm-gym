@@ -677,6 +677,27 @@ body.kidmode .modebar{border-color:#F5CDE2}
 .hcard .btn.big:disabled{opacity:1;background:var(--ok);border-color:var(--ok)}
 .goal-pick{display:flex;flex-wrap:wrap;gap:6px}
 
+
+/* tutos en images */
+.ico .su-s{stroke:var(--suit);stroke-width:10;stroke-linecap:round;fill:none}
+.ico.tuto{width:64px;height:64px;border-radius:18px}
+.ico.tuto.sm{width:56px;height:56px;border-radius:14px}
+.ico.tuto.big{width:min(70vw,240px);height:min(70vw,240px);border-radius:32px}
+.hc-steps.pics li{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:center}
+.hc-steps.pics li::before{display:none}
+.hc-steps.pics .n{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--c);color:#fff;font-style:normal;font-size:12px;font-weight:800;margin-right:6px;vertical-align:1px}
+.tuto-btn{width:100%}
+.tuto-sheet{align-items:center;text-align:center}
+.tuto-stage{position:relative;animation:pop .35s ease}
+.tuto-n{position:absolute;top:-8px;left:-8px;width:40px;height:40px;border-radius:50%;background:var(--brand);color:#fff;display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:20px}
+.tuto-txt{margin:0;font-family:var(--f-display);font-size:22px;font-weight:800;line-height:1.25;max-width:22ch;min-height:2.5em}
+.tuto-thumbs{display:flex;gap:10px}
+.tuto-thumbs button{border:3px solid transparent;border-radius:18px;padding:0;background:none}
+.tuto-thumbs button.on{border-color:var(--brand)}
+.tuto-ctrl{display:flex;gap:10px;width:100%}
+.tuto-ctrl .btn{flex:1;font-size:18px;min-height:50px}
+.tuto-ctrl .btn.ghost{flex:0 0 60px}
+
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* apparence */
@@ -1274,19 +1295,71 @@ function homeChallenges(k){
     <div class="hcards">${cardIds.map(id=>{const c=HOME_CARDS[id];const st=stamps[`${k.id}|${id}`]||[];const doneToday=st.includes(t);
       return `<article class="hcard" style="--c:${APPARATUS[c.ic].col}">
         <div class="hc-top">${ico(c.ic,'xl')}<div><b>${c.title}</b><span class="hc-min">⏱ ${c.min} min</span></div></div>
-        <ol class="hc-steps">${c.steps.map(x=>`<li>${x}</li>`).join('')}</ol>
+        <ol class="hc-steps pics">${c.steps.map((x,i)=>`<li>${frame(id,i)}<span><i class="n">${i+1}</i>${x}</span></li>`).join('')}</ol>
+        <button class="btn ghost tuto-btn" data-tuto="${id}">🎬 Voir le tuto en images</button>
         <div class="hc-safe">👩 Avec un adulte à côté${c.tapis?' · 🛏️ Sur un tapis':''}</div>
         <div class="week-stamps" aria-label="Cette semaine">${weekDays().map(d=>`<span class="${st.includes(iso(d))?'on':''}${iso(d)===t?' today':''}"><i>${st.includes(iso(d))?'★':''}</i><small>${fr(d,{weekday:'narrow'})}</small></span>`).join('')}</div>
         <button class="btn big" data-stamp="${id}" ${doneToday?'disabled':''}>${doneToday?'✓ Bravo ! À demain':'Je l’ai fait ! ⭐'}</button>
       </article>`}).join('')}</div></section>`;
 }
 
+
+/* ================= tutos en images (une image par étape) ================= */
+const TH=(x,y,w)=>`<rect class="su" x="${x}" y="${y}" width="${w}" height="10" rx="5"/>`;
+const MAT=`<rect class="ap" x="4" y="52" width="56" height="6" rx="3" opacity=".5"/>`;
+const FLOOR=`<rect class="ap" x="8" y="55" width="48" height="3" rx="1.5" opacity=".35"/>`;
+const BADGE=t=>`<circle class="ap" cx="52" cy="11" r="9"/><text x="52" y="15" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" font-weight="800" fill="#fff">${t}</text>`;
+const MOVE=d=>`<path class="aps" d="${d}" stroke-dasharray="3 4"/>`;
+const TUTO={
+  oeuf:[
+    `${MAT}${L(28,45,38,33)}${L(38,33,42,50)}${T(22,28,17)}${L(27,32,37,37)}${gHead(27,21)}`,
+    `${MAT}${TH(18,40,17)}${L(34,45,40,30)}${L(40,30,48,36)}${L(26,43,38,33)}${gHead(13,44)}${MOVE('M20 30 Q30 20 42 24')}`,
+    `${MAT}${L(28,45,38,33)}${L(38,33,42,50)}${T(22,28,17)}${L(27,32,37,37)}${gHead(27,21)}${MOVE('M10 40 Q12 26 22 20')}${BADGE('×5')}`],
+  chandelle:[
+    `${MAT}${L(32,46,55,49)}${L(32,47,55,51)}${L(18,48,28,50)}${TH(16,41,18)}${gHead(10,46)}`,
+    `${MAT}${L(32,45,32,18)}${L(30,46,28,18)}${L(18,48,28,50)}${TH(16,41,18)}${gHead(10,46)}${MOVE('M50 46 Q50 26 38 18')}`,
+    `${MAT}${L(29,26,27,6)}${L(32,26,34,6)}${L(26,40,20,48)}${T(25,24,20)}${gHead(18,47,-1)}${BADGE('5 s')}`],
+  pont:[
+    `${MAT}${L(32,46,42,34)}${L(42,34,47,51)}${L(18,48,28,50)}${TH(16,41,18)}${gHead(10,46)}`,
+    `${MAT}${L(32,46,42,34)}${L(42,34,47,51)}${L(19,42,15,32)}${L(15,32,9,40)}${TH(16,41,18)}${gHead(10,46)}`,
+    `${MAT}${L(14,51,20,34)}${L(44,34,50,51)}<path class="su-s" d="M20 34 Q32 16 44 34"/>${gHead(21,43,-1)}${BADGE('3 s')}`],
+  flamant:[
+    `${FLOOR}${L(30,38,30,55)}${L(34,38,42,46)}${L(42,46,33,47)}${L(29,26,24,38)}${L(35,26,40,38)}${T(27,22,17)}${gHead(32,15)}`,
+    `${FLOOR}${L(30,38,30,55)}${L(34,38,42,46)}${L(42,46,33,47)}${L(29,25,27,8)}${L(35,25,37,8)}<path class="lm" d="M27 8 Q32 2 37 8"/>${T(27,22,17)}${gHead(32,15)}`,
+    `${FLOOR}${L(30,38,30,55)}${L(34,38,42,46)}${L(42,46,33,47)}${L(29,25,27,8)}${L(35,25,37,8)}<path class="lm" d="M27 8 Q32 2 37 8"/>${T(27,22,17)}${gHead(32,15)}${BADGE('10 s')}`],
+  planche:[
+    `${MAT}${L(36,38,57,50)}${L(21,40,21,51)}${L(21,51,31,51)}${TH(18,32,20)}${gHead(12,35)}`,
+    `${MAT}${L(36,38,57,50)}${L(21,40,21,51)}${L(21,51,31,51)}${TH(18,32,20)}${gHead(12,35)}<path class="aps" d="M6 30 L60 47" stroke-dasharray="2 4" opacity=".7"/>`,
+    `${MAT}${L(36,38,57,50)}${L(21,40,21,51)}${L(21,51,31,51)}${TH(18,32,20)}${gHead(12,35)}${BADGE('×3')}`],
+  lapin:[
+    `${FLOOR}${L(30,38,31,55)}${L(34,38,33,55)}${L(29,26,26,38)}${L(35,26,38,38)}${T(27,22,17)}${gHead(32,15)}`,
+    `${FLOOR}${L(30,32,31,46)}${L(34,32,33,46)}${L(29,19,25,4)}${L(35,19,39,4)}${T(27,16,17)}${gHead(32,10)}${MOVE('M22 52 L42 52')}`,
+    `${FLOOR}${L(30,42,22,47)}${L(22,47,27,55)}${L(34,42,42,47)}${L(42,47,37,55)}${L(29,32,20,36)}${L(35,32,44,36)}${T(27,28,15)}${gHead(32,21)}${BADGE('×10')}`],
+  ecart:[
+    `${MAT}${L(28,44,6,50)}${L(36,44,58,50)}${L(29,32,18,46)}${L(35,32,46,46)}${T(27,28,17)}${gHead(32,21)}`,
+    `${MAT}${L(28,46,6,50)}${L(36,46,58,50)}${L(29,40,16,51)}${L(35,40,48,51)}${T(27,37,10)}${gHead(32,33)}${MOVE('M32 14 L32 26')}`,
+    `${MAT}${L(28,44,6,50)}${L(36,44,58,50)}${L(29,31,24,17)}${L(35,31,40,17)}${T(27,28,17)}${gHead(32,21)}<path class="aps" d="M44 12 q3 -3 6 0 q3 3 6 0M44 19 q3 -3 6 0 q3 3 6 0" opacity=".7"/>${BADGE('×5')}`],
+};
+const frame=(id,i,cls='')=>`<span class="ico tuto ${cls}" style="--c:${APPARATUS[HOME_CARDS[id].ic].col}"><svg viewBox="0 0 64 64">${TUTO[id][i]}</svg></span>`;
+let tuto=null, tutoTimer=null;
+function tutoSheet(){
+  const c=HOME_CARDS[tuto.id];
+  document.getElementById('layer').innerHTML=`<div class="scrim" data-close><div class="sheet tuto-sheet" role="dialog" aria-modal="true" aria-label="Tuto ${c.title}"><button class="x" data-close aria-label="Fermer">✕</button>
+    <h2>${c.title}</h2>
+    <div class="tuto-stage">${frame(tuto.id,tuto.i,'big')}<span class="tuto-n">${tuto.i+1}</span></div>
+    <p class="tuto-txt">${c.steps[tuto.i]}</p>
+    <div class="tuto-thumbs">${c.steps.map((_,i)=>`<button class="${i===tuto.i?'on':''}" data-tstep="${i}" aria-label="Étape ${i+1}">${frame(tuto.id,i,'sm')}</button>`).join('')}</div>
+    <div class="tuto-ctrl"><button class="btn ghost" data-tnav="-1" ${tuto.i?'':'disabled'}>‹</button><button class="btn" data-tplay>${tuto.play?'⏸ Pause':'▶ Lecture'}</button><button class="btn ghost" data-tnav="1" ${tuto.i<2?'':'disabled'}>›</button></div>
+    <div class="hc-safe">👩 Avec un adulte à côté${c.tapis?' · 🛏️ Sur un tapis':''}</div></div></div>`;
+}
+function tutoPlay(on){ clearInterval(tutoTimer); tuto.play=on; if(on){ tutoTimer=setInterval(()=>{ if(!document.querySelector('.tuto-sheet')){clearInterval(tutoTimer);return} tuto.i=(tuto.i+1)%3; tutoSheet(); },2200); } tutoSheet(); }
+
 /* ================= sheets ================= */
 function openSheet(html){
   document.getElementById('layer').innerHTML=`<div class="scrim" data-close><div class="sheet" role="dialog" aria-modal="true"><button class="x" data-close aria-label="Fermer">✕</button>${html}</div></div>`;
   const f=document.querySelector('.sheet input, .sheet .btn'); f&&f.focus();
 }
-const closeSheet=()=>document.getElementById('layer').innerHTML='';
+const closeSheet=()=>{clearInterval(tutoTimer);document.getElementById('layer').innerHTML=''};
 function planSheet(key){
   const k=kid(); const s=sessions(k.group,16).find(x=>x.type==='sess'&&x.key===key); if(!s) return;
   const p=planFor(k.group,s);
@@ -1481,6 +1554,10 @@ document.addEventListener('click',e=>{
     toast(m==='kid'?`🤸 Mode ${kid().name}`:m==='coach'?'🔒 Espace coachs':'👩 Mode parent'); }
   else if(d.stamp){ const k=kid(); const key=`${k.id}|${d.stamp}`; const r=b.getBoundingClientRect(); const a=stamps[key]=stamps[key]||[]; const t=iso(today); if(!a.includes(t)) a.push(t); store.set('stamps',stamps); render(); burst(r); toast('⭐ Super, tu as gagné un tampon !'); }
   else if(d.goal){ const key=`${coachGroup}|${badgeGym}`; const a=goals[key]=goals[key]||[]; const i=a.indexOf(d.goal); if(i>-1) a.splice(i,1); else if(a.length>=3){ toast('3 objectifs maximum'); return; } else a.push(d.goal); store.set('goals',goals); render(); }
+  else if(d.tuto){ tuto={id:d.tuto,i:0,play:false}; tutoPlay(true); }
+  else if(d.tstep){ tuto.i=+d.tstep; tutoPlay(false); }
+  else if(d.tnav){ tuto.i=Math.max(0,Math.min(2,tuto.i+ +d.tnav)); tutoPlay(false); }
+  else if('tplay' in d){ tutoPlay(!tuto.play); }
   else if(d.album){ album=d.album; render(); }
   else if(d.ph){ openLb(+d.ph); }
   else if(d.lb){ const n=albumPhotos().length; openLb((lbIndex+ +d.lb+n)%n); }
