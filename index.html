@@ -591,26 +591,12 @@ body.kidmode .wrap{max-width:720px}
 .rsvp.demo svg{width:18px;height:18px}
 
 
-/* playlist */
 .seg.four{grid-template-columns:repeat(4,1fr)}
 .seg.four button{font-size:13px;padding:10px 2px}
 .seg.five{grid-template-columns:repeat(5,1fr)}.seg.five button{font-size:12px;padding:10px 1px;white-space:nowrap}
-.songs{display:flex;flex-direction:column;gap:6px}
-.song{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:14px;background:var(--surface-2)}
-.song.top{background:color-mix(in srgb,var(--violet) 14%,var(--surface))}
-.rank{width:28px;height:28px;flex:none;border-radius:50%;display:grid;place-items:center;font-family:var(--f-display);font-weight:800;background:var(--surface);font-size:14px}
-.song.top .rank{background:var(--brand);color:#fff}
 .song-main{display:flex;flex-direction:column;min-width:0;flex:1}
 .song-main b{font-size:15px;line-height:1.2}
 .song-main small{color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.vote{flex:none;border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-weight:800;color:var(--muted)}
-.vote.on{background:var(--no);border-color:var(--no);color:#fff}
-.ok-btn,.no-btn{width:38px;height:38px;flex:none;border-radius:50%;border:0;font-weight:900;font-size:16px;color:#fff;background:var(--ok)}
-.no-btn{background:var(--no)}
-.play{width:36px;height:36px;flex:none;border-radius:50%;display:grid;place-items:center;text-decoration:none;color:#fff;background:#1DB954;font-size:13px}
-.play.yt{background:#E53935}
-.mini-pl{display:flex;flex-direction:column;gap:4px;padding:12px 14px;border-radius:16px;background:var(--surface-2);font-size:14px}
-.mini-pl small{color:var(--muted)}
 
 
 /* banque d'exercices */
@@ -740,8 +726,6 @@ body.kidmode .week-stamps .on i{background:linear-gradient(135deg,#FF2E88,#FF8A3
 body.kidmode .badge-el{border-style:solid;border-width:1px;border-radius:16px}
 body.kidmode .badge-el.on{box-shadow:0 0 0 2px var(--neon2),0 8px 22px color-mix(in srgb,var(--neon2) 30%,transparent)}
 body.kidmode .bstar{color:var(--neon3);font-weight:900}
-body.kidmode .song.top .rank{background:linear-gradient(135deg,var(--neon1),var(--neon2))}
-body.kidmode .vote.on{background:var(--neon1);border-color:var(--neon1)}
 
 
 /* ===== espace parent, même style que le mode ado ===== */
@@ -1139,7 +1123,7 @@ const ELEMENTS=[
   {id:'roue',k:'sol',name:'Roue'},{id:'atr',k:'sol',name:'Poirier'},{id:'eqp',k:'poutre',name:'Équilibre poutre'},{id:'dtp',k:'poutre',name:'Demi-tour poutre'},
   {id:'apb',k:'barres',name:'Appui barres'},{id:'bal',k:'barres',name:'Balancés'},{id:'sext',k:'saut',name:'Saut extension'},{id:'sgr',k:'saut',name:'Saut groupé'},
 ];
-let coachGroup=store.get('cgroup','GAF 1'), coachTab=store.get('ctab','appel');
+let coachGroup=store.get('cgroup','GAF 1'), coachTab=store.get('ctab','appel'); if(coachTab==='music') coachTab='appel';
 let appel=store.get('appel',{}), appelDone=store.get('appelDone',{}), customPlans=store.get('plans',{});
 let badges=store.get('badges',{'GAF 1|Lia':['rav','chd','sext']}), badgeGym=null, draft=null, picker=false;
 function roster(g){
@@ -1229,14 +1213,14 @@ function vLock(){
 function vCoachs(){
   if(!coachOn) return vLock();
   const g=coachGroup; const s=coachNext(g);
-  const tabs=[['appel','✓ Appel'],['prog','🗒️ Prog.'],['compet','🏅 Compét'],['badges','★ Badges'],['music','🎵 Musique']];
+  const tabs=[['appel','✓ Appel'],['prog','🗒️ Prog.'],['compet','🏅 Compét'],['badges','★ Badges']];
   return `
   <div class="coach-bar"><span class="sess-meta">Connecté·e en coach</span><button class="link" data-coachout>🔒 Verrouiller</button></div>
   <h1 class="hello">Espace <span class="script">coachs</span></h1>
   <div class="filters" role="group" aria-label="Groupe">${Object.keys(GROUPS).map(n=>`<button class="chip" data-cgroup="${n}" aria-pressed="${n===g}">${n} ${stars(GROUPS[n].n)}</button>`).join('')}</div>
   ${s?`<div class="coach-sess">${dateBlock(s.date)}<div><b>Prochain cours</b><div class="sess-meta tnum">${cap1(fr(s.date,{weekday:'long',day:'numeric',month:'long'}))} · ${hhmm(s.s)} – ${hhmm(s.e)}</div></div></div>`:''}
-  <div class="seg five" role="tablist">${tabs.map(([id,l])=>`<button role="tab" data-ctab="${id}" aria-selected="${coachTab===id}">${l}</button>`).join('')}</div>
-  <section class="card coach-card">${coachTab==='compet'?coachCompet(g):!s?'<div class="empty">Pas de cours prévu.</div>':coachTab==='appel'?coachAppel(g,s):coachTab==='prog'?coachProg(g,s):coachTab==='music'?coachMusic(g):coachBadges(g)}</section>
+  <div class="seg four" role="tablist">${tabs.map(([id,l])=>`<button role="tab" data-ctab="${id}" aria-selected="${coachTab===id}">${l}</button>`).join('')}</div>
+  <section class="card coach-card">${coachTab==='compet'?coachCompet(g):!s?'<div class="empty">Pas de cours prévu.</div>':coachTab==='appel'?coachAppel(g,s):coachTab==='prog'?coachProg(g,s):coachBadges(g)}</section>
   <p class="proto">Aperçu côté coachs · gymnastes et réponses simulées pour la démo</p>`;
 }
 function myBadges(k){
@@ -1359,53 +1343,7 @@ function sendMsg(txt){
 function focusChat(){const m=document.getElementById('msgs'); if(m) m.scrollTop=m.scrollHeight; const i=document.getElementById('msgIn'); if(i&&matchMedia('(min-width:900px)').matches) i.focus();}
 
 
-/* ================= playlist du cours ================= */
-const SONG_SEED=[
-  {title:'Happy',artist:'Pharrell Williams',by:'Jade',v:7},
-  {title:'Dance Monkey',artist:'Tones and I',by:'Inès',v:6},
-  {title:'Flowers',artist:'Miley Cyrus',by:'Rose',v:5},
-  {title:'Shake It Off',artist:'Taylor Swift',by:'Lou',v:4},
-  {title:'Dernière danse',artist:'Indila',by:'Zoé',v:3},
-  {title:'Espresso',artist:'Sabrina Carpenter',by:'Emma',v:2},
-  {title:'Calm Down',artist:'Rema',by:'Léna',v:1,st:'wait'},
-];
-let songs=store.get('songs',{}), myVotes=store.get('votes',{});
-function groupSongs(g){
-  if(!songs[g]) songs[g]=SONG_SEED.map((x,i)=>({id:`${g}-${i}`,title:x.title,artist:x.artist,by:x.by,v:x.v+(i*Object.keys(GROUPS).indexOf(g))%3,st:x.st||'ok'}));
-  return songs[g];
-}
-const songVotes=x=>x.v+(myVotes[x.id]?1:0);
-const okSongs=g=>groupSongs(g).filter(x=>x.st==='ok').sort((a,b)=>songVotes(b)-songVotes(a));
-const q=x=>encodeURIComponent(`${x.title} ${x.artist}`);
-function songRow(x,i,mode){
-  const top=i<5&&x.st==='ok';
-  return `<div class="song${top?' top':''}"><span class="rank tnum">${x.st==='ok'?i+1:'⏳'}</span>
-    <span class="song-main"><b>${esc(x.title)}</b><small>${esc(x.artist)} · proposé par ${esc(x.by)}</small></span>
-    ${mode==='coach'?(x.st==='wait'?`<button class="ok-btn" data-song-ok="${x.id}" aria-label="Accepter">✓</button><button class="no-btn" data-song-no="${x.id}" aria-label="Refuser">✕</button>`
-      :`<a class="play" href="https://open.spotify.com/search/${q(x)}" target="_blank" rel="noopener" aria-label="Écouter sur Spotify">▶</a><a class="play yt" href="https://www.youtube.com/results?search_query=${q(x)}" target="_blank" rel="noopener" aria-label="Voir sur YouTube">▶</a>`)
-    :x.st==='ok'?`<button class="vote${myVotes[x.id]?' on':''}" data-vote="${x.id}" aria-pressed="${!!myVotes[x.id]}">♥ <span class="tnum">${songVotes(x)}</span></button>`:'<span class="pill wait">Le coach écoute</span>'}
-  </div>`;
-}
-function kidPlaylist(k){
-  const list=okSongs(k.group); const mine=groupSongs(k.group).filter(x=>x.st==='wait'&&x.by===k.name);
-  return `<section class="kid-card"><div class="sh"><h2>Playlist de la séance</h2><span class="sess-meta">Top 5 joué au cours</span></div>
-    <div class="songs">${list.map((x,i)=>songRow(x,i)).join('')}${mine.map(x=>songRow(x,0)).join('')}</div>
-    <button class="btn big" data-propose>＋ Proposer un son</button></section>`;
-}
-function coachMusic(g){
-  const wait=groupSongs(g).filter(x=>x.st==='wait'); const list=okSongs(g);
-  return `${wait.length?`<div class="call-head"><b>À valider</b><span class="pill wait">${wait.length}</span></div><div class="songs">${wait.map(x=>songRow(x,0,'coach')).join('')}</div>`:'<div class="allgood">✓ Aucune proposition en attente</div>'}
-  <div class="call-head"><b>🎶 Playlist du prochain cours</b></div>
-  <div class="songs">${list.slice(0,5).map((x,i)=>songRow(x,i,'coach')).join('')}</div>
-  <p class="hint">Classée par les votes des filles. ▶ ouvre le titre sur Spotify ou YouTube, à lancer depuis ton compte.</p>`;
-}
-function proposeSheet(){
-  openSheet(`<h2>Proposer un son</h2><p class="hint" style="margin:0">Le coach l’écoute avant de l’ajouter à la playlist.</p>
-  <form id="songForm" style="display:flex;flex-direction:column;gap:14px">
-    <div class="field"><label for="sTitle">Le titre</label><input id="sTitle" required maxlength="40" placeholder="Ex. Happy"></div>
-    <div class="field"><label for="sArtist">Le chanteur ou le groupe</label><input id="sArtist" maxlength="40" placeholder="Ex. Pharrell Williams"></div>
-    <button class="btn big">Envoyer au coach</button></form>`);
-}
+
 
 
 /* ================= banque d'exercices ================= */
@@ -1505,7 +1443,6 @@ function planSheet(key){
   <ol class="plan">${p.steps.map(st=>{const a=APPARATUS[st.k];return `<li style="--c:${a.col}">${ico(st.k)}
     <div><div class="row"><b>${a.name}</b><span class="tnum plan-min">${st.min} min</span></div><p>${st.txt}</p></div></li>`}).join('')}</ol>
   <div class="defi"><span class="defi-star">★</span><div><b>Ton défi</b><p>${p.defi}</p></div></div>
-  <div class="mini-pl"><b>🎵 En musique</b>${okSongs(k.group).slice(0,3).map(x=>`<span>${esc(x.title)} <small>· ${esc(x.artist)}</small></span>`).join('')}</div>
   <div class="bag" aria-label="Dans le sac"><span>💧 Gourde</span><span>🎀 Cheveux attachés</span><span>🚫 Pas de bijoux</span></div>
   <button class="btn big" data-close>C’est parti 🔥</button>`);
 }
@@ -1605,7 +1542,6 @@ function vKid(){
     <div class="kid-steps">${p.steps.map(st=>`<div class="kid-step">${ico(st.k,'xl')}<b>${APPARATUS[st.k].name}</b><small>${st.min} min</small></div>`).join('')}</div>
     <div class="defi"><span class="defi-star">⚡</span><div><b>Challenge du jour</b><p>${p.defi}</p></div></div></section>`:''}
   ${homeChallenges(k)}
-  ${kidPlaylist(k)}
   <section class="kid-card"><div class="sh"><h2>Mes skills</h2><span class="pill ok">${got.length} / ${ELEMENTS.length}</span></div>
     <div class="badges">${ELEMENTS.map(el=>{const on=got.includes(el.id);return `<div class="badge-el${on?' on':''}">${ico(el.k)}<span>${el.name}</span>${on?'<i class="bstar" aria-hidden="true">✓</i>':''}</div>`}).join('')}</div></section>`;
 }
@@ -1687,9 +1623,6 @@ document.addEventListener('click',e=>{
   else if('replay' in d){ onb={step:0,name:kid().name,group:kid().group}; renderOnb(); }
   else if('themeToggle' in d){ theme=isDark()?'light':'dark'; store.set('theme',theme); render(); }
   else if(d.themeSet){ theme=d.themeSet; store.set('theme',theme); render(); toast(theme==='dark'?'🌙 Mode sombre':theme==='light'?'☀️ Mode clair':'📱 Comme le téléphone'); }
-  else if(d.vote){ const r=b.getBoundingClientRect(); myVotes[d.vote]=!myVotes[d.vote]; store.set('votes',myVotes); render(); if(myVotes[d.vote]) burst(r); }
-  else if('propose' in d){ proposeSheet(); }
-  else if(d.songOk||d.songNo){ const id=d.songOk||d.songNo; const x=groupSongs(coachGroup).find(y=>y.id===id); x.st=d.songOk?'ok':'no'; store.set('songs',songs); render(); toast(d.songOk?`🎵 « ${x.title} » ajoutée !`:'Proposition refusée'); }
   else if('bank' in d){ bankAdded=0; bankSheet(); }
   else if(d.bankf){ bankF=d.bankf; bankSheet(); }
   else if(d.addex){ const [k,m,...n]=d.addex.split('|'); draft.steps.push([k,+m,n.join('|')]); bankAdded++; render(); bankSheet(); toast(`+ ${n.join('|')}`); }
@@ -1739,9 +1672,6 @@ document.addEventListener('change',e=>{
 document.addEventListener('submit',e=>{
   if(e.target.id==='exForm'){ e.preventDefault(); const n=document.getElementById('exName').value.trim(); if(!n) return; const k=document.getElementById('exK').value;
     myEx.push({k,n,m:10}); store.set('myEx',myEx); bankF=k; bankSheet(); toast('✏️ Exercice ajouté à ta banque'); return; }
-  if(e.target.id==='songForm'){ e.preventDefault(); const t=document.getElementById('sTitle').value.trim(); if(!t) return; const k=kid();
-    groupSongs(k.group).push({id:'s'+Date.now(),title:t,artist:document.getElementById('sArtist').value.trim()||'—',by:k.name,v:0,st:'wait'});
-    store.set('songs',songs); closeSheet(); render(); toast('🎤 Envoyée au coach !'); return; }
   if(e.target.id==='composer'){ e.preventDefault(); sendMsg(document.getElementById('msgIn').value); return; }
   if(e.target.id!=='kidForm') return; e.preventDefault();
   const name=document.getElementById('kname').value.trim(); if(!name) return;
