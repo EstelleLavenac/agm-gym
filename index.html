@@ -1532,7 +1532,7 @@ function evSheet(id){
   else action=`${ev.guests?`<div class="field"><label>On vient à combien en plus ?</label><div class="stepper"><button type="button" data-step="-1" aria-label="Moins">−</button><b id="g" class="tnum">1</b><button type="button" data-step="1" aria-label="Plus">+</button></div></div>`:''}<button class="btn big" data-confirm="${ev.id}">Inscrire ${esc(k.name)}</button>`;
   openSheet(`<span class="ev-ic lg" aria-hidden="true">${KIND_IC[ev.kind]}</span><span class="kind ${ev.kind}">${KIND[ev.kind]}</span><h2>${ev.title}</h2>
   <div class="facts"><span>📅 ${range}</span><span>⏰ ${ev.time}</span><span>💶 ${ev.price}</span></div>
-  <p class="sess-meta" style="margin:0">${ev.text}</p>${action}${past?'':`<button class="btn ghost" data-ics="${ev.id}">📅 Ajouter à mon agenda</button>`}`);
+  <p class="sess-meta" style="margin:0">${ev.text}</p>${action}${past||window.claude?'':`<button class="btn ghost" data-ics="${ev.id}">📅 Ajouter à mon agenda</button>`}`);
 }
 
 /* ================= rendu & événements ================= */
