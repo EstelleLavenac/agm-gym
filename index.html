@@ -785,16 +785,6 @@ body.coachmode{--neon1:#0F8C98;--neon2:#20A9B5;--neon3:#3FD8E0}
 .chip[aria-pressed="true"]{background:linear-gradient(135deg,var(--neon1),var(--neon2));border-color:transparent;color:#fff}
 
 .side-foot em{font-family:var(--f-display)!important;font-style:italic;font-weight:800;font-size:15px;letter-spacing:-.01em;margin-bottom:2px}
-
-/* version garçon */
-.hr.b,.shorts{display:var(--boy-d,none)}
-.hr.g,.bun{display:var(--girl-d,inline)}
-.ico .shorts,.av.face .shorts{fill:color-mix(in srgb,var(--suit) 45%,#141020)}
-.sexseg{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:16px;background:var(--surface-2);width:100%}
-.sexseg button{border:0;background:transparent;border-radius:12px;padding:11px;font-weight:800;font-size:15px;color:var(--muted)}
-.sexseg button.on{background:var(--surface);color:var(--ink);box-shadow:0 2px 10px rgba(40,20,70,.14)}
-.opts.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* apparence */
@@ -853,9 +843,9 @@ const KIND = {stage:'Stage',compet:'Compétition',fort:'Temps fort'};
 
 /* Déroulés de cours : exemples que les coachs rempliraient chaque semaine */
 /* Pictos : une petite gymnaste illustrée, aux couleurs choisies par l'enfant */
-function gHead(x,y,f=1){ return `<circle class="hr g" cx="${x}" cy="${y-1.4*f}" r="7.2"/><circle class="hr bun" cx="${x+2*f}" cy="${y-8.6*f}" r="3.6"/><ellipse class="hr b" cx="${x}" cy="${y-1.9*f}" rx="6.7" ry="4.8"/><path class="hr b" d="M${x-6.4} ${y-.9*f} Q${x-3} ${y+2.2*f} ${x+1} ${y-1.2*f} Q${x+4} ${y+1.4*f} ${x+6.4} ${y-.9*f}" /><circle class="hd" cx="${x}" cy="${y+.6*f}" r="6"/><circle class="ey" cx="${x-2.2}" cy="${y+.9*f}" r="1"/><circle class="ey" cx="${x+2.2}" cy="${y+.9*f}" r="1"/><circle class="bl" cx="${x-3.6}" cy="${y+3*f}" r="1.3"/><circle class="bl" cx="${x+3.6}" cy="${y+3*f}" r="1.3"/>`; }
+function gHead(x,y,f=1){ return `<circle class="hr" cx="${x}" cy="${y-1.4*f}" r="7.2"/><circle class="hr" cx="${x+2*f}" cy="${y-8.6*f}" r="3.6"/><circle class="hd" cx="${x}" cy="${y+.6*f}" r="6"/><circle class="ey" cx="${x-2.2}" cy="${y+.9*f}" r="1"/><circle class="ey" cx="${x+2.2}" cy="${y+.9*f}" r="1"/><circle class="bl" cx="${x-3.6}" cy="${y+3*f}" r="1.3"/><circle class="bl" cx="${x+3.6}" cy="${y+3*f}" r="1.3"/>`; }
 const L=(x1,y1,x2,y2)=>`<path class="lm" d="M${x1} ${y1}L${x2} ${y2}"/>`;
-const T=(x,y,h=15)=>`<rect class="su" x="${x}" y="${y}" width="10" height="${h}" rx="5"/><rect class="shorts" x="${x-1}" y="${y+h-6}" width="12" height="7.5" rx="2.5"/>`;
+const T=(x,y,h=15)=>`<rect class="su" x="${x}" y="${y}" width="10" height="${h}" rx="5"/>`;
 const APPARATUS = {
   echauf:{name:'Échauffement',col:'#F2994A',svg:`<ellipse class="ap" cx="32" cy="57" rx="14" ry="2.5" opacity=".35"/><path class="aps" d="M8 30h6M50 30h6M10 40h4M50 40h4"/>${L(29,25,19,12)}${L(35,25,45,12)}${L(29,35,21,53)}${L(35,35,43,53)}${T(27,21)}${gHead(32,14)}`},
   sol:{name:'Sol',col:'#2D9CDB',svg:`<rect class="ap" x="6" y="51" width="52" height="7" rx="3.5"/>${L(30,23,22,7)}${L(34,23,42,7)}${L(29,33,25,50)}${L(35,33,39,50)}${T(27,20)}${gHead(32,42,-1)}`},
@@ -868,10 +858,8 @@ const APPARATUS = {
 const LOOK={skin:['#F7D7BF','#E8B48F','#C68A5E','#8D5A3B','#5A3826'],hair:['#F0CF6E','#B5561B','#6B4226','#2E1E14','#151015'],suit:['#8E3FC4','#D63A9E','#20A9B5','#F2994A','#2F80ED']};
 const DEFAULT_LOOK={skin:'#F7D7BF',hair:'#6B4226',suit:'#8E3FC4'};
 const look=k=>Object.assign({},DEFAULT_LOOK,k&&k.look);
-const isBoy=k=>!!(k&&k.sex==='m');
-const gx=(k,f,m)=>isBoy(k)?m:f;
-function applyLook(){const k=kid();const l=look(k);const r=document.documentElement.style;r.setProperty('--skin',l.skin);r.setProperty('--hair',l.hair);r.setProperty('--suit',l.suit);r.setProperty('--boy-d',isBoy(k)?'inline':'none');r.setProperty('--girl-d',isBoy(k)?'none':'inline')}
-const faceSvg=(l,k)=>`<svg viewBox="20 2 24 24" style="--skin:${l.skin};--hair:${l.hair};--boy-d:${isBoy(k)?'inline':'none'};--girl-d:${isBoy(k)?'none':'inline'}">${gHead(32,14)}</svg>`;
+function applyLook(){const l=look(kid());const r=document.documentElement.style;r.setProperty('--skin',l.skin);r.setProperty('--hair',l.hair);r.setProperty('--suit',l.suit)}
+const faceSvg=(l)=>`<svg viewBox="20 2 24 24" style="--skin:${l.skin};--hair:${l.hair}">${gHead(32,14)}</svg>`;
 const PLANS = [
   {theme:'Session équilibre',defi:'Tenir 5 s sur un pied au milieu de la poutre',steps:[['echauf',2,'Cardio et sauts'],['poutre',4,'Pointes, demi-tour, saut'],['sol',3,'Roulades et chandelle'],['jeu',1,'Jeu de réaction'],['etire',1,'Grand écart et pont']]},
   {theme:'Session envol',defi:'3 sauts groupés d’affilée, réception plantée',steps:[['echauf',2,'Corde à sauter'],['saut',4,'Élan, tremplin, on atterrit'],['barres',3,'Balancés et appui'],['jeu',1,'Relais en équipes'],['etire',1,'Étirements']]},
@@ -955,7 +943,7 @@ const EXTRA = [];
 
 /* ================= composants ================= */
 const stars = n => `<span class="stars" aria-label="niveau ${n} sur 3">${'★'.repeat(n)}<span class="off">${'★'.repeat(3-n)}</span></span>`;
-const statusPill = (st,k) => st==='yes'?`<span class="pill ok">✓ ${gx(k,'Présente','Présent')}</span>`:st==='no'?`<span class="pill no">${gx(k,'Absente','Absent')}</span>`:'<span class="pill wait">? À répondre</span>';
+const statusPill = st => st==='yes'?'<span class="pill ok">✓ Présente</span>':st==='no'?'<span class="pill no">Absente</span>':'<span class="pill wait">? À répondre</span>';
 const cap1 = s => s.replace(/^./,c=>c.toUpperCase());
 const ico = (k,cls='') => `<span class="ico ${cls}" style="--c:${APPARATUS[k].col}"><svg viewBox="0 0 64 64">${APPARATUS[k].svg}</svg></span>`;
 
@@ -973,7 +961,7 @@ function sessionRow(k,s){
   if(s.ferie) return `<div class="sess cancel">${dateBlock(s.date)}<div class="sess-body"><div class="sess-line"><strong>Pas cours</strong><span class="pill off">Férié</span></div></div></div>`;
   const p=planFor(k.group,s);
   return `<div class="sess">${dateBlock(s.date)}<div class="sess-body">
-    <div class="sess-line"><strong class="tnum">${hhmm(s.s)} – ${hhmm(s.e)}</strong>${statusPill(rsvp[keyFor(k,s)],k)}</div>
+    <div class="sess-line"><strong class="tnum">${hhmm(s.s)} – ${hhmm(s.e)}</strong>${statusPill(rsvp[keyFor(k,s)])}</div>
     ${rsvpControl(k,s)}
     <button class="prog" data-plan="${s.key}"><span class="peek-icons">${p.steps.slice(1,3).map(x=>ico(x.k,'sm')).join('')}</span>Le programme</button>
   </div></div>`;
@@ -982,7 +970,7 @@ function holidayRow(s){
   return `<div class="holiday"><span class="big-emoji" aria-hidden="true">🌴</span><div><b>${s.hol[2]}</b><small>Reprise le ${fr(new Date(parse(s.hol[1]).getTime()+864e5),{weekday:'long',day:'numeric',month:'long'})}</small></div></div>`;
 }
 function kidChips(){
-  return `<div class="kids">${kids.map(k=>`<button class="kid" data-kid="${k.id}" aria-pressed="${k.id===activeKid}"><span class="av face">${faceSvg(look(k),k)}</span>${esc(k.name)} <small>${k.group}</small>${k.id===activeKid?'<span class="edit" aria-hidden="true">✏️</span>':''}</button>`).join('')}<button class="kid add" data-addkid aria-label="Ajouter un enfant">+</button></div>`;
+  return `<div class="kids">${kids.map(k=>`<button class="kid" data-kid="${k.id}" aria-pressed="${k.id===activeKid}"><span class="av face">${faceSvg(look(k))}</span>${esc(k.name)} <small>${k.group}</small>${k.id===activeKid?'<span class="edit" aria-hidden="true">✏️</span>':''}</button>`).join('')}<button class="kid add" data-addkid aria-label="Ajouter un enfant">+</button></div>`;
 }
 const forGroup = (ev,g) => ev.groups==='all' || ev.groups.includes(g);
 const KIND_IC = {stage:'🤸',compet:'🏅',fort:'🎉'};
@@ -993,7 +981,7 @@ function eventCard(ev,k){
   const range = ev.end ? `${fr(d,{day:'numeric'})} → ${fr(parse(ev.end),{day:'numeric',month:'short'})}` : fr(d,{weekday:'short',day:'numeric',month:'short'});
   let action;
   if(past) action='<span class="pill off">Terminé</span>';
-  else if(mine) action=`<span class="pill ok">✓ ${gx(k,'Inscrite','Inscrit')}</span>`;
+  else if(mine) action=`<span class="pill ok">✓ Inscrite</span>`;
   else if(!ok) action=`<span class="pill off">${ev.groups.join(', ')}</span>`;
   else if(left<=0) action='<span class="pill no">Complet</span>';
   else action=`<span class="btn sm">Je m’inscris</span>`;
@@ -1057,7 +1045,7 @@ function vAgenda(){
   const k=kid();
   const list=EVENTS.filter(e=>evFilter==='all'||(evFilter==='mine'?regs[`${k.id}|${e.id}`]:e.kind===evFilter));
   const months={}; list.forEach(e=>{const m=fr(parse(e.date),{month:'long',year:'numeric'});(months[m]=months[m]||[]).push(e)});
-  const f=[['all','Tout'],['stage','🤸 Stages'],['compet','🏅 Compét’'],['fort','🎉 Fêtes'],['mine','✓ Mes inscriptions']];
+  const f=[['all','Tout'],['stage','🤸 Stages'],['compet','🏅 Compét’'],['fort','🎉 Fêtes'],['mine','✓ Inscrite']];
   return `
   <h1 class="hello">Agenda <span class="script">de la saison</span></h1>
   <div class="filters" role="group" aria-label="Filtrer">${f.map(([v,l])=>`<button class="chip" data-filter="${v}" aria-pressed="${evFilter===v}">${l}</button>`).join('')}</div>
@@ -1115,9 +1103,9 @@ function isHere(g,s,gym){const v=appel[callKey(g,s,gym)];return v===undefined?an
 function coachAppel(g,s){
   const list=roster(g); const here=list.filter(x=>isHere(g,s,x)).length;
   const done=appelDone[`${g}|${s.key}`];
-  return `<div class="call-head"><div><b class="coach-n tnum">${here}</b> <span class="sess-meta">/ ${list.length} gymnastes</span></div>
+  return `<div class="call-head"><div><b class="coach-n tnum">${here}</b> <span class="sess-meta">/ ${list.length} présentes</span></div>
     ${done?'<span class="pill ok">✓ Appel validé</span>':''}</div>
-  <p class="hint">Les gymnastes qui ont répondu « Oui » sont déjà cochés. Touche un prénom pour changer.</p>
+  <p class="hint">Les filles qui ont répondu « Oui » sont déjà cochées. Touche un prénom pour changer.</p>
   <div class="roll">${list.map(gym=>{const h=isHere(g,s,gym), a=answerOf(g,s,gym);
     const flag=!h&&a!=='no'?'<span class="pill no">Sans prévenir</span>':a==='no'?'<span class="pill off">A prévenu</span>':!a&&h?'<span class="pill wait">Pas répondu</span>':'';
     return `<button class="gym${h?' here':''}" data-call="${esc(gym.name)}" aria-pressed="${h}">${avatar(gym.name)}<span class="gym-name">${esc(gym.name)}</span>${flag}<span class="tick" aria-hidden="true">${h?'✓':''}</span></button>`}).join('')}</div>
@@ -1261,7 +1249,7 @@ const SEED = {
   all:[{who:'Le bureau AGM',coach:1,t:'Sam. 10:00',txt:'Bienvenue dans la commu AGM 💜 Bienveillance et bonne humeur obligatoires !',pin:1,h:12}],
   covoit:[{who:'Nadia (maman de Lou)',t:'Hier 17:20',txt:'Je pars de Pierrefeu lundi 17h50, 2 places dispo 🚗'},{who:'Tom (papa de Zoé)',t:'Hier 17:45',txt:'Je prends le retour à 20h30 si besoin !'},{who:'Nadia (maman de Lou)',t:'Hier 18:02',txt:'Top, merci 🙏',h:2}],
 };
-const QUICK = {gaf:['👍 Merci !','On sera là 😊','Bravo à tous ! 👏'],club:['Merci beaucoup !','J’ai une question sur le stage'],all:['Bonjour à tous 👋','Merci !'],covoit:['J’ai 2 places 🚗','Quelqu’un passe par Pierrefeu ?','Merci 🙏']};
+const QUICK = {gaf:['👍 Merci !','Elle sera là 😊','Bravo les filles ! 👏'],club:['Merci beaucoup !','J’ai une question sur le stage'],all:['Bonjour à tous 👋','Merci !'],covoit:['J’ai 2 places 🚗','Quelqu’un passe par Pierrefeu ?','Merci 🙏']};
 let chan=null, myMsgs=store.get('msgs',{}), hearts=store.get('hearts',{}), seenCh=store.get('seen',{}), typing=false;
 const avatar = n => `<span class="m-av" style="--h:${[...n].reduce((a,c)=>a+c.charCodeAt(0),0)%360}">${esc(n[0])}</span>`;
 function chanList(){
@@ -1333,7 +1321,7 @@ function coachMusic(g){
   return `${wait.length?`<div class="call-head"><b>À valider</b><span class="pill wait">${wait.length}</span></div><div class="songs">${wait.map(x=>songRow(x,0,'coach')).join('')}</div>`:'<div class="allgood">✓ Aucune proposition en attente</div>'}
   <div class="call-head"><b>🎶 Playlist du prochain cours</b></div>
   <div class="songs">${list.slice(0,5).map((x,i)=>songRow(x,i,'coach')).join('')}</div>
-  <p class="hint">Classée par les votes des gymnastes. ▶ ouvre le titre sur Spotify ou YouTube, à lancer depuis ton compte.</p>`;
+  <p class="hint">Classée par les votes des filles. ▶ ouvre le titre sur Spotify ou YouTube, à lancer depuis ton compte.</p>`;
 }
 function proposeSheet(){
   openSheet(`<h2>Proposer un son</h2><p class="hint" style="margin:0">Le coach l’écoute avant de l’ajouter à la playlist.</p>
@@ -1374,13 +1362,13 @@ function bankSheet(){
 /* ================= défis à la maison ================= */
 /* Exercices choisis pour être sans danger à la maison : souplesse, équilibre, gainage. Pas de roue, poirier ni salto. */
 const HOME_CARDS={
-  oeuf:{title:'Le balancier',ic:'sol',min:3,steps:['En boule, genoux serrés dans les bras','Roule doucement sur le dos','Reviens en position assise · ×5'],tapis:true},
-  chandelle:{title:'La chandelle',ic:'etire',min:3,steps:['Sur le dos, bras le long du corps','Monte les jambes bien droites','Tiens 5 secondes'],tapis:true},
+  oeuf:{title:'Le balancier',ic:'sol',min:3,steps:['Assise, genoux serrés dans les bras','Roule doucement sur le dos','Reviens assise · ×5'],tapis:true},
+  chandelle:{title:'La chandelle',ic:'etire',min:3,steps:['Allongée sur le dos','Monte les jambes bien droites','Tiens 5 secondes'],tapis:true},
   pont:{title:'Le pont',ic:'etire',min:3,steps:['Sur le dos, pieds à plat','Mains près des oreilles','Pousse et tiens 3 secondes'],tapis:true},
   flamant:{title:'Équilibre 1 pied',ic:'poutre',min:3,steps:['Debout sur un pied','Bras en couronne','Tiens 10 secondes, puis change'],tapis:false},
   planche:{title:'Gainage planche',ic:'echauf',min:3,steps:['Sur les avant-bras et les pointes','Corps gainé, bien aligné','Tiens 10 secondes, 3 fois'],tapis:true},
   lapin:{title:'Sauts extension',ic:'saut',min:3,steps:['Pieds joints','Saute haut, bras tendus','×10, réception amortie'],tapis:false},
-  ecart:{title:'Prépa grand écart',ic:'etire',min:5,steps:['En position assise, jambes écartées','Penche-toi doucement en avant','Respire calmement 5 fois'],tapis:true},
+  ecart:{title:'Prépa grand écart',ic:'etire',min:5,steps:['Assise, jambes écartées','Penche-toi doucement en avant','Respire calmement 5 fois'],tapis:true},
 };
 const EL_CARD={rav:'oeuf',rar:'oeuf',chd:'chandelle',pont:'pont',roue:'planche',atr:'planche',eqp:'flamant',dtp:'flamant',apb:'planche',bal:'planche',sext:'lapin',sgr:'lapin'};
 let goals=store.get('goals',{'GAF 1|Lia':['pont','eqp']}), stamps=store.get('stamps',{});
@@ -1475,18 +1463,16 @@ function lookSheet(){
   const k=kid(); const l=look(k);
   const sw=(part,names)=>`<div class="swatches" role="radiogroup" aria-label="${names}">${LOOK[part].map(c=>`<button class="sw${l[part]===c?' on':''}" data-look="${part}|${c}" style="--sw:${c}" aria-label="${names}" aria-pressed="${l[part]===c}"></button>`).join('')}</div>`;
   openSheet(`<h2>Mon avatar</h2><p class="hint" style="margin:0">Personnalise-le : il apparaît dans tes séances, ton training et tes skills.</p>
-  ${`<div class="sexseg" role="radiogroup" aria-label="Fille ou garçon">${[['f','👧 Fille'],['m','👦 Garçon']].map(([v,l])=>`<button type="button" class="${(k.sex||'f')===v?'on':''}" data-sex="${v}" aria-pressed="${(k.sex||'f')===v}">${l}</button>`).join('')}</div>`}
   <div class="look-preview">${['sol','poutre','saut'].map(x=>`<span class="ico xl" style="--c:${APPARATUS[x].col}"><svg viewBox="0 0 64 64">${APPARATUS[x].svg}</svg></span>`).join('')}</div>
   <div class="field"><label>Peau</label>${sw('skin','Couleur de peau')}</div>
   <div class="field"><label>Cheveux</label>${sw('hair','Couleur des cheveux')}</div>
-  <div class="field"><label>${gx(k,'Justaucorps','Tenue')}</label>${sw('suit','Couleur de la tenue')}</div>
+  <div class="field"><label>Justaucorps</label>${sw('suit','Couleur du justaucorps')}</div>
   <button class="btn big" data-close>Valider</button>`);
 }
 function kidSheet(){
   openSheet(`<h2>Ajouter un enfant</h2>
   <form id="kidForm" style="display:flex;flex-direction:column;gap:16px">
     <div class="field"><label for="kname">Prénom</label><input id="kname" required maxlength="20" placeholder="Prénom"></div>
-    <fieldset class="field"><legend>C’est</legend><div class="opts two"><label class="opt"><input type="radio" name="sex" value="f" checked><div><b>👧 Une fille</b></div></label><label class="opt"><input type="radio" name="sex" value="m"><div><b>👦 Un garçon</b></div></label></div></fieldset>
     <fieldset class="field"><legend>Son groupe</legend><div class="opts three">${Object.entries(GROUPS).map(([n,g],i)=>`<label class="opt"><input type="radio" name="grp" value="${n}" ${i===0?'checked':''}><div><b>${n}</b>${stars(g.n)}</div></label>`).join('')}</div></fieldset>
     <button class="btn big">Ajouter</button>
   </form>`);
@@ -1497,7 +1483,7 @@ function evSheet(id){
   const range = ev.end ? `Du ${fr(d,{day:'numeric'})} au ${fr(parse(ev.end),{day:'numeric',month:'long'})}` : cap1(fr(d,{weekday:'long',day:'numeric',month:'long'}));
   let action;
   if(past) action='<span class="pill off">Terminé</span>';
-  else if(mine) action=`<div class="allgood">✓ ${esc(k.name)} est ${gx(k,'inscrite','inscrit')}${mine.guests?` · +${mine.guests}`:''}</div><button class="link" data-unreg="${ev.id}">Annuler l’inscription</button>`;
+  else if(mine) action=`<div class="allgood">✓ ${esc(k.name)} est inscrite${mine.guests?` · +${mine.guests}`:''}</div><button class="link" data-unreg="${ev.id}">Annuler l’inscription</button>`;
   else if(!ok) action=`<div class="empty">Réservé aux ${ev.groups.join(', ')}</div>`;
   else if(left<=0) action='<div class="empty">Complet</div>';
   else action=`${ev.guests?`<div class="field"><label>On vient à combien en plus ?</label><div class="stepper"><button type="button" data-step="-1" aria-label="Moins">−</button><b id="g" class="tnum">1</b><button type="button" data-step="1" aria-label="Plus">+</button></div></div>`:''}<button class="btn big" data-confirm="${ev.id}">Inscrire ${esc(k.name)}</button>`;
@@ -1518,7 +1504,7 @@ function modeBar(cur){
   const k=kid();
   return `<div class="modebar" role="tablist" aria-label="Mode">
     <button role="tab" class="m-parent" data-mode="parent" aria-selected="${cur==='parent'}"><span class="m-ic">👩</span><span>Parent</span></button>
-    <button role="tab" class="m-kid" data-mode="kid" aria-selected="${cur==='kid'}"><span class="av face">${faceSvg(look(k),k)}</span><span>${esc(k.name)}</span></button>
+    <button role="tab" class="m-kid" data-mode="kid" aria-selected="${cur==='kid'}"><span class="av face">${faceSvg(look(k))}</span><span>${esc(k.name)}</span></button>
     <button role="tab" class="m-coach" data-mode="coach" aria-selected="${cur==='coach'}"><span class="m-ic">${cur==='coach'&&coachOn?'🔓':'🔒'}</span><span>Coach</span></button>
   </div>`;
 }
@@ -1580,10 +1566,9 @@ function renderOnb(){
     `<img class="logo" src="${LOGO}" alt="" width="150" height="150"><h1 class="hello">Bienvenue à <span class="script">l’AGM</span> !</h1><p>Les cours, l’agenda et toutes les infos du club, au même endroit.</p>`,
     `<div class="onb-art">${ico('saut','huge')}</div><h1 class="hello">Ton <span class="script">enfant</span></h1>
      <div class="field"><label for="onbName">Son prénom</label><input id="onbName" data-onbname value="${esc(onb.name)}" maxlength="20"></div>
-     <div class="sexseg" role="radiogroup" aria-label="Fille ou garçon">${[['f','👧 Fille'],['m','👦 Garçon']].map(([v,l])=>`<button type="button" class="${(onb.sex||'f')===v?'on':''}" data-onbsex="${v}" aria-pressed="${(onb.sex||'f')===v}">${l}</button>`).join('')}</div>
      <div class="opts three">${Object.entries(GROUPS).map(([n,g])=>`<button class="opt grp${onb.group===n?' on':''}" data-onbgroup="${n}"><b>${n}</b>${stars(g.n)}</button>`).join('')}</div>`,
     `<div class="onb-art">${ico('poutre','huge')}</div><h1 class="hello">Crée son <span class="script">avatar</span></h1>
-     <div class="field"><label>Peau</label>${sw('skin')}</div><div class="field"><label>Cheveux</label>${sw('hair')}</div><div class="field"><label>${(onb.sex||'f')==='m'?'Tenue':'Justaucorps'}</label>${sw('suit')}</div>`,
+     <div class="field"><label>Peau</label>${sw('skin')}</div><div class="field"><label>Cheveux</label>${sw('hair')}</div><div class="field"><label>Justaucorps</label>${sw('suit')}</div>`,
     `<div class="onb-art">${ico('sol','huge')}</div><h1 class="hello">Avant chaque <span class="script">cours</span></h1><p>Un seul geste pour dire aux coachs si ${esc(onb.name||'ton enfant')} sera là.</p>
      <div class="rsvp demo"><span class="yes on">${I.yes}Oui</span><span class="no">${I.no}Non</span></div>`,
   ];
@@ -1638,13 +1623,11 @@ document.addEventListener('click',e=>{
     if(pin.length===4){ if(pin.length===4){ const r=b.getBoundingClientRect(); coachOn=true; pin=''; render(); burst(r); toast('👋 Bienvenue coach !'); return; } render(); setTimeout(()=>{pin='';if(route()==='coachs'&&!coachOn)render()},700); toast('Code incorrect'); return; }
     render(); }
   else if('coachout' in d){ coachOn=false; pin=''; location.hash='accueil'; toast('🔒 Espace coachs verrouillé'); }
-  else if(d.onb){ if(d.onb==='back'){onb.step--} else if(d.onb==='skip'||(d.onb==='next'&&onb.step===3)){ const k=kids[0]; if(onb.name.trim()) k.name=onb.name.trim(); k.group=onb.group; k.sex=onb.sex||k.sex||'f'; activeKid=k.id; save(); store.set('onb2',true); const fin=d.onb==='next'; onb=null; location.hash='accueil'; render(); if(fin){burst(b.getBoundingClientRect());toast(`🎉 Bienvenue ${kids[0].name} !`)} return; } else {onb.step++} renderOnb(); }
+  else if(d.onb){ if(d.onb==='back'){onb.step--} else if(d.onb==='skip'||(d.onb==='next'&&onb.step===3)){ const k=kids[0]; if(onb.name.trim()) k.name=onb.name.trim(); k.group=onb.group; activeKid=k.id; save(); store.set('onb2',true); const fin=d.onb==='next'; onb=null; location.hash='accueil'; render(); if(fin){burst(b.getBoundingClientRect());toast(`🎉 Bienvenue ${kids[0].name} !`)} return; } else {onb.step++} renderOnb(); }
   else if(d.onbgroup){ onb.group=d.onbgroup; renderOnb(); }
-  else if(d.onbsex){ onb.sex=d.onbsex; kids[0].sex=d.onbsex; save(); applyLook(); renderOnb(); }
-  else if(d.sex){ const k=kid(); k.sex=d.sex; save(); applyLook(); lookSheet(); if(kidMode) document.getElementById('view').innerHTML=modeBar('kid')+vKid(); else render(); }
   else if(d.kidmode){ kidMode=d.kidmode==='1'; store.set('kidMode',kidMode); window.scrollTo(0,0); render(); if(kidMode) toast(`🤸 Mode ${kid().name}`); }
   else if('lookme' in d){ lookSheet(); }
-  else if('replay' in d){ onb={step:0,name:kid().name,group:kid().group,sex:kid().sex||'f'}; renderOnb(); }
+  else if('replay' in d){ onb={step:0,name:kid().name,group:kid().group}; renderOnb(); }
   else if('themeToggle' in d){ theme=isDark()?'light':'dark'; store.set('theme',theme); render(); }
   else if(d.themeSet){ theme=d.themeSet; store.set('theme',theme); render(); toast(theme==='dark'?'🌙 Mode sombre':theme==='light'?'☀️ Mode clair':'📱 Comme le téléphone'); }
   else if(d.vote){ const r=b.getBoundingClientRect(); myVotes[d.vote]=!myVotes[d.vote]; store.set('votes',myVotes); render(); if(myVotes[d.vote]) burst(r); }
@@ -1673,7 +1656,7 @@ document.addEventListener('click',e=>{
   else if(d.filter){ evFilter=d.filter;render(); }
   else if(d.ev){ evSheet(d.ev); }
   else if(d.step){ const g=document.getElementById('g'); g.textContent=Math.max(0,Math.min(6,+g.textContent+ +d.step)); }
-  else if(d.confirm){ const g=document.getElementById('g'); const r=b.getBoundingClientRect(); regs[`${kid().id}|${d.confirm}`]={guests:g?+g.textContent:0}; save();closeSheet();render();burst(r); toast(`🎉 ${kid().name} est ${gx(kid(),'inscrite','inscrit')} !`); }
+  else if(d.confirm){ const g=document.getElementById('g'); const r=b.getBoundingClientRect(); regs[`${kid().id}|${d.confirm}`]={guests:g?+g.textContent:0}; save();closeSheet();render();burst(r); toast(`🎉 ${kid().name} est inscrite !`); }
   else if(d.unreg){ delete regs[`${kid().id}|${d.unreg}`]; save();closeSheet();render(); toast('Inscription annulée'); }
   else if(d.bulk){ const k=kid(); sessions(k.group,10).filter(s=>s.type==='sess'&&!s.ferie).forEach(s=>{const key=keyFor(k,s); if(d.bulk==='reset'){delete rsvp[key];delete reasons[key]} else if(!rsvp[key]) rsvp[key]='yes'}); const r=b.getBoundingClientRect(); save();render(); if(d.bulk==='reset') toast('Réponses effacées'); else {burst(r);toast('🎉 Super, tout est confirmé !')} }
   else if(d.copy){ const t=document.getElementById(d.copy).textContent; const done=()=>toast('Adresse copiée');
@@ -1702,8 +1685,8 @@ document.addEventListener('submit',e=>{
   if(e.target.id==='composer'){ e.preventDefault(); sendMsg(document.getElementById('msgIn').value); return; }
   if(e.target.id!=='kidForm') return; e.preventDefault();
   const name=document.getElementById('kname').value.trim(); if(!name) return;
-  const fd=new FormData(e.target); const group=fd.get('grp'); const sex=fd.get('sex')||'f'; const id='k'+Date.now();
-  kids.push({id,name,group,sex}); activeKid=id; save(); closeSheet(); render(); toast(`👋 Bienvenue ${name} !`);
+  const group=new FormData(e.target).get('grp'); const id='k'+Date.now();
+  kids.push({id,name,group}); activeKid=id; save(); closeSheet(); render(); toast(`👋 Bienvenue ${name} !`);
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeSheet();render()} if(lbIndex!==null&&document.querySelector('.lb')&&(e.key==='ArrowRight'||e.key==='ArrowLeft')){const n=albumPhotos().length;openLb((lbIndex+(e.key==='ArrowRight'?1:-1)+n)%n)}});
 window.addEventListener('hashchange',()=>{render();window.scrollTo(0,0)});
