@@ -785,6 +785,25 @@ body.coachmode{--neon1:#0F8C98;--neon2:#20A9B5;--neon3:#3FD8E0}
 .chip[aria-pressed="true"]{background:linear-gradient(135deg,var(--neon1),var(--neon2));border-color:transparent;color:#fff}
 
 .side-foot em{font-family:var(--f-display)!important;font-style:italic;font-weight:800;font-size:15px;letter-spacing:-.01em;margin-bottom:2px}
+
+/* ===== pictos néon (direction C) ===== */
+:root{--n1:#FF5FA8;--n2:#B69CFF;--n3:#5EF2E4}
+.ico{background:radial-gradient(120% 120% at 100% 0%,color-mix(in srgb,var(--c) 55%,transparent),transparent 58%),radial-gradient(100% 100% at 0% 100%,rgba(46,230,214,.18),transparent 60%),linear-gradient(140deg,#140C26,#2A1452 60%,#3B0F4A)!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)!important;border-radius:30%}
+.ico svg{width:90%!important;height:90%!important;overflow:visible}
+.ico .nl{fill:none;stroke:url(#ng);stroke-width:6.5;stroke-linecap:round;stroke-linejoin:round}
+.ico .nb{fill:none;stroke:url(#ng);stroke-width:11;stroke-linecap:round}
+.ico .nt{fill:none;stroke:url(#ng);stroke-width:3.6;stroke-linecap:round}
+.ico .nh{fill:url(#ng)}
+.ico .nfig{filter:drop-shadow(0 0 2.5px color-mix(in srgb,var(--n2) 75%,transparent))}
+.ico .ap{fill:rgba(255,255,255,.22)}
+.ico .aps{fill:none;stroke:rgba(255,255,255,.26);stroke-width:3;stroke-linecap:round}
+.ico .mo{fill:none;stroke:var(--n3);stroke-width:2.2;stroke-dasharray:3 4;stroke-linecap:round;opacity:.85}
+.ico .bdg{fill:url(#ng)}
+.ico .bdt{fill:#fff;font:900 10px var(--f-body)}
+.av.face{background:linear-gradient(140deg,#140C26,#2A1452)!important;overflow:hidden}
+.av.face svg{width:100%;height:100%}
+.sw{background:var(--sw)}
+
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* apparence */
@@ -808,6 +827,7 @@ html{transition:background-color .25s}
   <main class="main"><div class="wrap" id="view"></div></main>
   <nav class="tabbar" id="tabNav" aria-label="Navigation"></nav>
 </div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="ng" gradientUnits="userSpaceOnUse" x1="8" y1="8" x2="92" y2="92"><stop offset="0" style="stop-color:var(--n1)"/><stop offset=".5" style="stop-color:var(--n2)"/><stop offset="1" style="stop-color:var(--n3)"/></linearGradient><linearGradient id="ngf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--n1)"/><stop offset=".5" style="stop-color:var(--n2)"/><stop offset="1" style="stop-color:var(--n3)"/></linearGradient></defs></svg>
 <div id="layer"></div>
 <div id="onb"></div>
 
@@ -843,23 +863,57 @@ const KIND = {stage:'Stage',compet:'Compétition',fort:'Temps fort'};
 
 /* Déroulés de cours : exemples que les coachs rempliraient chaque semaine */
 /* Pictos : une petite gymnaste illustrée, aux couleurs choisies par l'enfant */
-function gHead(x,y,f=1){ return `<circle class="hr" cx="${x}" cy="${y-1.4*f}" r="7.2"/><circle class="hr" cx="${x+2*f}" cy="${y-8.6*f}" r="3.6"/><circle class="hd" cx="${x}" cy="${y+.6*f}" r="6"/><circle class="ey" cx="${x-2.2}" cy="${y+.9*f}" r="1"/><circle class="ey" cx="${x+2.2}" cy="${y+.9*f}" r="1"/><circle class="bl" cx="${x-3.6}" cy="${y+3*f}" r="1.3"/><circle class="bl" cx="${x+3.6}" cy="${y+3*f}" r="1.3"/>`; }
-const L=(x1,y1,x2,y2)=>`<path class="lm" d="M${x1} ${y1}L${x2} ${y2}"/>`;
-const T=(x,y,h=15)=>`<rect class="su" x="${x}" y="${y}" width="10" height="${h}" rx="5"/>`;
-const APPARATUS = {
-  echauf:{name:'Échauffement',col:'#F2994A',svg:`<ellipse class="ap" cx="32" cy="57" rx="14" ry="2.5" opacity=".35"/><path class="aps" d="M8 30h6M50 30h6M10 40h4M50 40h4"/>${L(29,25,19,12)}${L(35,25,45,12)}${L(29,35,21,53)}${L(35,35,43,53)}${T(27,21)}${gHead(32,14)}`},
-  sol:{name:'Sol',col:'#2D9CDB',svg:`<rect class="ap" x="6" y="51" width="52" height="7" rx="3.5"/>${L(30,23,22,7)}${L(34,23,42,7)}${L(29,33,25,50)}${L(35,33,39,50)}${T(27,20)}${gHead(32,42,-1)}`},
-  poutre:{name:'Poutre',col:'#9D2E94',svg:`<rect class="ap" x="5" y="45" width="54" height="6" rx="3"/><path class="aps" d="M15 51v9M49 51v9"/>${L(28,25,14,20)}${L(36,25,50,20)}${L(33,34,49,28)}${L(31,34,31,44)}${T(26,20)}${gHead(31,13)}`},
-  barres:{name:'Barres',col:'#722F9D',svg:`<path class="aps" d="M6 9h52" style="stroke-width:5"/><path class="aps" d="M9 9v6M55 9v6"/>${L(29,26,27,10)}${L(35,26,37,10)}${L(30,38,25,55)}${L(34,38,31,56)}${T(27,24)}${gHead(32,18)}`},
-  saut:{name:'Saut',col:'#27AE60',svg:`<path class="ap" d="M18 46h28l4 12H14z"/><path class="aps" d="M6 22h6M6 30h4"/>${L(29,20,17,7)}${L(35,20,47,7)}${L(29,29,14,35)}${L(35,29,50,35)}${T(27,17,13)}${gHead(32,10)}`},
-  jeu:{name:'Jeu',col:'#E0A800',svg:`<circle class="ap" cx="46" cy="14" r="8"/><path d="M38.5 12c4 3 11 3 15 0M46 6v16" stroke="#fff" stroke-width="1.6" fill="none" opacity=".8"/>${L(23,26,15,35)}${L(29,26,39,18)}${L(24,36,21,54)}${L(28,36,32,54)}${T(21,22)}${gHead(26,15)}`},
-  etire:{name:'Étirements',col:'#2CB5C0',svg:`<rect class="ap" x="4" y="53" width="56" height="4" rx="2" opacity=".5"/>${L(30,50,8,52)}${L(34,50,56,52)}${L(29,37,27,18)}${L(35,37,37,18)}${T(27,34,16)}${gHead(32,26)}`},
+/* Pictos : silhouettes néon articulées, sans visage. Le dégradé est choisi par la gymnaste. Repère 100×100, sol y≈88. */
+const NEON_OPTS=['#FF5FA8,#B69CFF,#5EF2E4','#FF8A3D,#FF2E88,#B44CFF','#5EF2E4,#2F80ED,#B69CFF','#FFE27A,#FF8A3D,#FF2E88','#7CFFB2,#2EE6D6,#7B5CFF'];
+function F(p,extra=''){
+  const seg=(a,b,c)=>`M${a[0]} ${a[1]}L${b[0]} ${b[1]}L${c[0]} ${c[1]}`;
+  const lim=[0,1].map(i=>seg(p.sh,p.el[i],p.ha[i])+seg(p.hip,p.kn[i],p.ft[i])).join('');
+  const tor=p.c?`M${p.sh[0]} ${p.sh[1]}Q${p.c[0]} ${p.c[1]} ${p.hip[0]} ${p.hip[1]}`:`M${p.sh[0]} ${p.sh[1]}L${p.hip[0]} ${p.hip[1]}`;
+  const tail=p.tail?`<path class="nt" d="M${p.head[0]} ${p.head[1]}L${p.tail[0]} ${p.tail[1]}"/>`:'';
+  return `${extra}<g class="nfig"><path class="nl" d="${lim}"/><path class="nb" d="${tor}"/>${tail}<circle class="nh" cx="${p.head[0]}" cy="${p.head[1]}" r="5.6"/></g>`;
+}
+const MAT='<rect class="ap" x="6" y="88" width="88" height="5" rx="2.5"/>';
+const FLOOR='<rect class="ap" x="16" y="89" width="68" height="3" rx="1.5"/>';
+const MOVE=d=>`<path class="mo" d="${d}"/>`;
+const BADGE=t=>`<circle class="bdg" cx="83" cy="15" r="11"/><text class="bdt" x="83" y="19" text-anchor="middle">${t}</text>`;
+const PO={
+  stand:{head:[50,16],sh:[50,26],el:[[45,38],[55,38]],ha:[[43,50],[57,50]],hip:[50,52],kn:[[48,69],[52,69]],ft:[[48,86],[52,86]],tail:[56,11]},
+  star:{head:[50,18],sh:[50,28],el:[[38,22],[62,22]],ha:[[28,14],[72,14]],hip:[50,52],kn:[[42,68],[58,68]],ft:[[34,84],[66,84]],tail:[57,13]},
+  hand:{head:[50,76],sh:[50,66],el:[[42,76],[58,76]],ha:[[38,87],[62,87]],hip:[50,43],kn:[[47,27],[53,27]],ft:[[45,11],[55,11]],tail:[57,83]},
+  arab:{head:[33,20],sh:[37,26],c:[42,36],el:[[26,22],[46,19]],ha:[[15,17],[56,13]],hip:[50,44],kn:[[50,59],[64,40]],ft:[[50,73],[79,35]],tail:[40,14]},
+  hang:{head:[50,26],sh:[50,34],el:[[41,24],[59,24]],ha:[[38,14],[62,14]],hip:[50,56],kn:[[48,71],[52,71]],ft:[[47,85],[53,85]],tail:[57,31]},
+  leap:{head:[58,22],sh:[56,31],c:[55,41],el:[[46,22],[68,22]],ha:[[39,13],[77,14]],hip:[52,51],kn:[[37,47],[67,53]],ft:[[20,45],[84,51]],tail:[65,17]},
+  throw:{head:[42,22],sh:[44,30],el:[[54,22],[36,38]],ha:[[64,16],[28,42]],hip:[45,54],kn:[[52,69],[37,67]],ft:[[56,86],[27,79]],tail:[35,17]},
+  straddle:{head:[50,46],sh:[50,56],el:[[43,43],[57,43]],ha:[[39,31],[61,31]],hip:[50,80],kn:[[32,83],[68,83]],ft:[[14,85],[86,85]],tail:[56,41]},
+  tuck:{head:[40,50],sh:[41,58],el:[[49,66],[51,68]],ha:[[57,63],[59,65]],hip:[44,81],kn:[[56,62],[58,64]],ft:[[63,81],[65,81]],tail:[33,47]},
+  rock:{head:[22,77],sh:[30,79],el:[[39,70],[41,72]],ha:[[47,62],[49,64]],hip:[54,79],kn:[[46,60],[48,62]],ft:[[58,55],[60,57]],tail:[16,72]},
+  lie:{head:[15,80],sh:[23,83],el:[[33,85],[33,86]],ha:[[43,86],[43,87]],hip:[50,83],kn:[[66,83],[66,85]],ft:[[82,83],[82,85]],tail:[9,76]},
+  legs45:{head:[15,80],sh:[23,83],el:[[33,85],[33,86]],ha:[[43,86],[43,87]],hip:[50,83],kn:[[60,71],[62,73]],ft:[[70,59],[72,61]],tail:[9,76]},
+  candle:{head:[28,82],sh:[38,82],c:[40,68],el:[[34,73],[37,74]],ha:[[42,62],[45,62]],hip:[44,54],kn:[[44,37],[47,37]],ft:[[44,20],[47,20]],tail:[21,77]},
+  knees:{head:[15,80],sh:[23,83],el:[[33,85],[33,86]],ha:[[43,86],[43,87]],hip:[50,83],kn:[[62,68],[64,68]],ft:[[72,86],[74,86]],tail:[9,76]},
+  ears:{head:[15,80],sh:[23,83],el:[[25,70],[27,70]],ha:[[19,79],[21,79]],hip:[50,83],kn:[[62,68],[64,68]],ft:[[72,86],[74,86]],tail:[9,76]},
+  bridge:{head:[35,71],sh:[30,62],c:[43,37],el:[[23,74],[27,74]],ha:[[17,87],[22,87]],hip:[60,50],kn:[[69,64],[72,64]],ft:[[77,87],[82,87]],tail:[41,78]},
+  passe:{head:[50,16],sh:[50,26],el:[[38,28],[62,28]],ha:[[26,30],[74,30]],hip:[50,52],kn:[[50,69],[61,62]],ft:[[50,86],[52,70]],tail:[56,11]},
+  crown:{head:[50,20],sh:[50,30],el:[[40,16],[60,16]],ha:[[47,7],[53,7]],hip:[50,55],kn:[[50,71],[61,65]],ft:[[50,87],[52,73]],tail:[56,15]},
+  plank:{head:[17,63],sh:[25,68],el:[[25,86],[28,86]],ha:[[35,86],[38,86]],hip:[55,73],kn:[[70,78],[71,78]],ft:[[86,85],[87,85]],tail:[11,58]},
+  jump:{head:[50,18],sh:[50,27],el:[[43,15],[57,15]],ha:[[38,5],[62,5]],hip:[50,50],kn:[[49,63],[51,63]],ft:[[48,76],[52,76]],tail:[56,13]},
+  squat:{head:[50,36],sh:[50,45],el:[[38,52],[62,52]],ha:[[29,47],[71,47]],hip:[50,66],kn:[[37,72],[63,72]],ft:[[42,87],[58,87]],tail:[56,31]},
+  straddleHold:{head:[50,48],sh:[50,57],el:[[42,68],[58,68]],ha:[[34,80],[66,80]],hip:[50,80],kn:[[32,83],[68,83]],ft:[[14,85],[86,85]],tail:[56,43]},
+  straddleFwd:{head:[50,66],sh:[50,72],el:[[40,78],[60,78]],ha:[[30,85],[70,85]],hip:[50,82],kn:[[32,84],[68,84]],ft:[[14,86],[86,86]],tail:[56,61]},
 };
-const LOOK={skin:['#F7D7BF','#E8B48F','#C68A5E','#8D5A3B','#5A3826'],hair:['#F0CF6E','#B5561B','#6B4226','#2E1E14','#151015'],suit:['#8E3FC4','#D63A9E','#20A9B5','#F2994A','#2F80ED']};
-const DEFAULT_LOOK={skin:'#F7D7BF',hair:'#6B4226',suit:'#8E3FC4'};
-const look=k=>Object.assign({},DEFAULT_LOOK,k&&k.look);
-function applyLook(){const l=look(kid());const r=document.documentElement.style;r.setProperty('--skin',l.skin);r.setProperty('--hair',l.hair);r.setProperty('--suit',l.suit)}
-const faceSvg=(l)=>`<svg viewBox="20 2 24 24" style="--skin:${l.skin};--hair:${l.hair}">${gHead(32,14)}</svg>`;
+const APPARATUS = {
+  echauf:{name:'Échauffement',col:'#F2994A',svg:F(PO.star,'<ellipse class="ap" cx="50" cy="90" rx="18" ry="2.5" opacity=".6"/>'+MOVE('M10 40h9M81 40h9M12 52h7M81 52h7'))},
+  sol:{name:'Sol',col:'#2D9CDB',svg:F(PO.hand,MAT)},
+  poutre:{name:'Poutre',col:'#9D2E94',svg:F(PO.arab,'<rect class="ap" x="8" y="74" width="84" height="5" rx="2.5"/><path class="aps" d="M22 79v11M78 79v11"/>')},
+  barres:{name:'Barres',col:'#722F9D',svg:F(PO.hang,'<path class="aps" d="M8 14h84" style="stroke-width:4"/><path class="aps" d="M13 14v76M87 14v76"/>')},
+  saut:{name:'Saut',col:'#27AE60',svg:F(PO.leap,'<path class="ap" d="M32 70h36l5 19H27z"/>'+MOVE('M6 64 Q22 54 36 60'))},
+  jeu:{name:'Jeu',col:'#E0A800',svg:F(PO.throw,'<circle class="ap" cx="78" cy="16" r="9" style="fill:#FFE27A;opacity:.85"/>'+MOVE('M66 26 Q70 22 72 21'))},
+  etire:{name:'Étirements',col:'#2CB5C0',svg:F(PO.straddle,MAT)},
+};
+const DEFAULT_LOOK={neon:NEON_OPTS[0]};
+const look=k=>({neon:(k&&k.look&&k.look.neon)||DEFAULT_LOOK.neon});
+function applyLook(){const n=look(kid()).neon.split(',');const r=document.documentElement.style;r.setProperty('--n1',n[0]);r.setProperty('--n2',n[1]);r.setProperty('--n3',n[2])}
+const faceSvg=()=>`<svg viewBox="0 0 100 100"><circle cx="50" cy="40" r="17" style="fill:url(#ngf)"/><path d="M18 100 Q50 52 82 100Z" style="fill:url(#ngf)"/></svg>`;
 const PLANS = [
   {theme:'Session équilibre',defi:'Tenir 5 s sur un pied au milieu de la poutre',steps:[['echauf',2,'Cardio et sauts'],['poutre',4,'Pointes, demi-tour, saut'],['sol',3,'Roulades et chandelle'],['jeu',1,'Jeu de réaction'],['etire',1,'Grand écart et pont']]},
   {theme:'Session envol',defi:'3 sauts groupés d’affilée, réception plantée',steps:[['echauf',2,'Corde à sauter'],['saut',4,'Élan, tremplin, on atterrit'],['barres',3,'Balancés et appui'],['jeu',1,'Relais en équipes'],['etire',1,'Étirements']]},
@@ -945,7 +999,7 @@ const EXTRA = [];
 const stars = n => `<span class="stars" aria-label="niveau ${n} sur 3">${'★'.repeat(n)}<span class="off">${'★'.repeat(3-n)}</span></span>`;
 const statusPill = st => st==='yes'?'<span class="pill ok">✓ Présente</span>':st==='no'?'<span class="pill no">Absente</span>':'<span class="pill wait">? À répondre</span>';
 const cap1 = s => s.replace(/^./,c=>c.toUpperCase());
-const ico = (k,cls='') => `<span class="ico ${cls}" style="--c:${APPARATUS[k].col}"><svg viewBox="0 0 64 64">${APPARATUS[k].svg}</svg></span>`;
+const ico = (k,cls='') => `<span class="ico ${cls}" style="--c:${APPARATUS[k].col}"><svg viewBox="0 0 100 100">${APPARATUS[k].svg}</svg></span>`;
 
 function rsvpControl(k,sess,ask){
   const key=keyFor(k,sess); const st=rsvp[key];
@@ -1393,42 +1447,16 @@ function homeChallenges(k){
 
 
 /* ================= tutos en images (une image par étape) ================= */
-const TH=(x,y,w)=>`<rect class="su" x="${x}" y="${y}" width="${w}" height="10" rx="5"/>`;
-const MAT=`<rect class="ap" x="4" y="52" width="56" height="6" rx="3" opacity=".5"/>`;
-const FLOOR=`<rect class="ap" x="8" y="55" width="48" height="3" rx="1.5" opacity=".35"/>`;
-const BADGE=t=>`<circle class="ap" cx="52" cy="11" r="9"/><text x="52" y="15" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" font-weight="800" fill="#fff">${t}</text>`;
-const MOVE=d=>`<path class="aps" d="${d}" stroke-dasharray="3 4"/>`;
 const TUTO={
-  oeuf:[
-    `${MAT}${L(28,45,38,33)}${L(38,33,42,50)}${T(22,28,17)}${L(27,32,37,37)}${gHead(27,21)}`,
-    `${MAT}${TH(18,40,17)}${L(34,45,40,30)}${L(40,30,48,36)}${L(26,43,38,33)}${gHead(13,44)}${MOVE('M20 30 Q30 20 42 24')}`,
-    `${MAT}${L(28,45,38,33)}${L(38,33,42,50)}${T(22,28,17)}${L(27,32,37,37)}${gHead(27,21)}${MOVE('M10 40 Q12 26 22 20')}${BADGE('×5')}`],
-  chandelle:[
-    `${MAT}${L(32,46,55,49)}${L(32,47,55,51)}${L(18,48,28,50)}${TH(16,41,18)}${gHead(10,46)}`,
-    `${MAT}${L(32,45,32,18)}${L(30,46,28,18)}${L(18,48,28,50)}${TH(16,41,18)}${gHead(10,46)}${MOVE('M50 46 Q50 26 38 18')}`,
-    `${MAT}${L(29,26,27,6)}${L(32,26,34,6)}${L(26,40,20,48)}${T(25,24,20)}${gHead(18,47,-1)}${BADGE('5 s')}`],
-  pont:[
-    `${MAT}${L(32,46,42,34)}${L(42,34,47,51)}${L(18,48,28,50)}${TH(16,41,18)}${gHead(10,46)}`,
-    `${MAT}${L(32,46,42,34)}${L(42,34,47,51)}${L(19,42,15,32)}${L(15,32,9,40)}${TH(16,41,18)}${gHead(10,46)}`,
-    `${MAT}${L(14,51,20,34)}${L(44,34,50,51)}<path class="su-s" d="M20 34 Q32 16 44 34"/>${gHead(21,43,-1)}${BADGE('3 s')}`],
-  flamant:[
-    `${FLOOR}${L(30,38,30,55)}${L(34,38,42,46)}${L(42,46,33,47)}${L(29,26,24,38)}${L(35,26,40,38)}${T(27,22,17)}${gHead(32,15)}`,
-    `${FLOOR}${L(30,38,30,55)}${L(34,38,42,46)}${L(42,46,33,47)}${L(29,25,21,10)}${L(35,25,43,10)}<path class="lm" d="M21 10 Q32 -2 43 10"/>${T(27,22,17)}${gHead(32,15)}`,
-    `${FLOOR}${L(30,38,30,55)}${L(34,38,42,46)}${L(42,46,33,47)}${L(29,25,21,10)}${L(35,25,43,10)}<path class="lm" d="M21 10 Q32 -2 43 10"/>${T(27,22,17)}${gHead(32,15)}${BADGE('10 s')}`],
-  planche:[
-    `${MAT}${L(36,38,57,50)}${L(21,40,21,51)}${L(21,51,31,51)}${TH(18,32,20)}${gHead(12,35)}`,
-    `${MAT}<path class="aps" d="M14 24 L58 38" stroke-dasharray="2 4" opacity=".8"/>${L(36,38,57,50)}${L(21,40,21,51)}${L(21,51,31,51)}${TH(18,32,20)}${gHead(12,35)}`,
-    `${MAT}${L(36,38,57,50)}${L(21,40,21,51)}${L(21,51,31,51)}${TH(18,32,20)}${gHead(12,35)}${BADGE('×3')}`],
-  lapin:[
-    `${FLOOR}${L(30,38,31,55)}${L(34,38,33,55)}${L(29,26,26,38)}${L(35,26,38,38)}${T(27,22,17)}${gHead(32,15)}`,
-    `${FLOOR}${L(30,32,31,46)}${L(34,32,33,46)}${L(29,19,20,5)}${L(35,19,44,5)}${T(27,16,17)}${gHead(32,10)}${MOVE('M22 52 L42 52')}`,
-    `${FLOOR}${L(30,42,22,47)}${L(22,47,27,55)}${L(34,42,42,47)}${L(42,47,37,55)}${L(29,32,20,36)}${L(35,32,44,36)}${T(27,28,15)}${gHead(32,21)}${BADGE('×10')}`],
-  ecart:[
-    `${MAT}${L(28,44,6,50)}${L(36,44,58,50)}${L(29,32,18,46)}${L(35,32,46,46)}${T(27,28,17)}${gHead(32,21)}`,
-    `${MAT}${L(28,46,6,50)}${L(36,46,58,50)}${L(29,40,16,51)}${L(35,40,48,51)}${T(27,37,10)}${gHead(32,33)}${MOVE('M32 14 L32 26')}`,
-    `${MAT}${L(28,44,6,50)}${L(36,44,58,50)}${L(29,31,19,16)}${L(35,31,45,16)}${T(27,28,17)}${gHead(32,21)}<path class="aps" d="M4 12 q3 -3 6 0 q3 3 6 0M4 19 q3 -3 6 0 q3 3 6 0" opacity=".7"/>${BADGE('×5')}`],
+  oeuf:[F(PO.tuck,MAT),F(PO.rock,MAT+MOVE('M70 50 Q60 40 46 46')),F(PO.tuck,MAT+BADGE('×5'))],
+  chandelle:[F(PO.lie,MAT),F(PO.legs45,MAT+MOVE('M86 74 Q84 56 74 46')),F(PO.candle,MAT+BADGE('5 s'))],
+  pont:[F(PO.knees,MAT),F(PO.ears,MAT),F(PO.bridge,MAT+BADGE('3 s'))],
+  flamant:[F(PO.stand,FLOOR),F(PO.passe,FLOOR),F(PO.crown,FLOOR+BADGE('10 s'))],
+  planche:[F(PO.plank,MAT),F(PO.plank,MAT+MOVE('M10 58 L92 80')),F(PO.plank,MAT+BADGE('×3'))],
+  lapin:[F(PO.stand,FLOOR),F(PO.jump,FLOOR+'<ellipse class="ap" cx="50" cy="90" rx="14" ry="2.3" opacity=".6"/>'+MOVE('M30 70v-14M70 70v-14')),F(PO.squat,FLOOR+BADGE('×10'))],
+  ecart:[F(PO.straddleHold,MAT),F(PO.straddleFwd,MAT+MOVE('M50 40v12')),F(PO.straddle,MAT+MOVE('M8 30 q4 -4 8 0 q4 4 8 0')+BADGE('×5'))],
 };
-const frame=(id,i,cls='')=>`<span class="ico tuto ${cls}" style="--c:${APPARATUS[HOME_CARDS[id].ic].col}"><svg viewBox="0 0 64 64">${TUTO[id][i]}</svg></span>`;
+const frame=(id,i,cls='')=>`<span class="ico tuto ${cls}" style="--c:${APPARATUS[HOME_CARDS[id].ic].col}"><svg viewBox="0 0 100 100">${TUTO[id][i]}</svg></span>`;
 let tuto=null, tutoTimer=null;
 function tutoSheet(){
   const c=HOME_CARDS[tuto.id];
@@ -1461,12 +1489,9 @@ function planSheet(key){
 }
 function lookSheet(){
   const k=kid(); const l=look(k);
-  const sw=(part,names)=>`<div class="swatches" role="radiogroup" aria-label="${names}">${LOOK[part].map(c=>`<button class="sw${l[part]===c?' on':''}" data-look="${part}|${c}" style="--sw:${c}" aria-label="${names}" aria-pressed="${l[part]===c}"></button>`).join('')}</div>`;
   openSheet(`<h2>Mon avatar</h2><p class="hint" style="margin:0">Personnalise-le : il apparaît dans tes séances, ton training et tes skills.</p>
-  <div class="look-preview">${['sol','poutre','saut'].map(x=>`<span class="ico xl" style="--c:${APPARATUS[x].col}"><svg viewBox="0 0 64 64">${APPARATUS[x].svg}</svg></span>`).join('')}</div>
-  <div class="field"><label>Peau</label>${sw('skin','Couleur de peau')}</div>
-  <div class="field"><label>Cheveux</label>${sw('hair','Couleur des cheveux')}</div>
-  <div class="field"><label>Justaucorps</label>${sw('suit','Couleur du justaucorps')}</div>
+  <div class="look-preview">${['sol','poutre','saut'].map(x=>`<span class="ico xl" style="--c:${APPARATUS[x].col}"><svg viewBox="0 0 100 100">${APPARATUS[x].svg}</svg></span>`).join('')}</div>
+  <div class="field"><label>Ta couleur néon</label><div class="swatches">${NEON_OPTS.map(c=>{const n=c.split(',');return `<button class="sw${l.neon===c?' on':''}" data-look="neon|${c}" style="--sw:linear-gradient(135deg,${n[0]},${n[1]},${n[2]})" aria-label="Dégradé ${n.join(' ')}" aria-pressed="${l.neon===c}"></button>`}).join('')}</div></div>
   <button class="btn big" data-close>Valider</button>`);
 }
 function kidSheet(){
@@ -1543,7 +1568,7 @@ function vKid(){
   return `<div class="kid-top"><div><span class="eyebrow">${k.group} · ${cap1(fr(new Date(),{weekday:'long',day:'numeric',month:'short'}))}</span><h1 class="hello">Hey <span class="script">${esc(k.name)}</span> 👋</h1></div><button class="theme-btn" data-theme-toggle aria-label="Changer de mode">${isDark()?'☀️':'🌙'}</button></div>
   ${next?`<section class="teen-next">
     <div class="tn-l"><span class="tn-k">Prochaine séance</span><b class="tn-j">${jx}</b><span class="tn-d">${cap1(fr(next.date,{weekday:'long',day:'numeric',month:'long'}))} · ${hhmm(next.s)}</span>${p?`<button class="tn-prog" data-plan="${next.key}">${esc(p.theme)} ›</button>`:''}</div>
-    <button class="me" data-lookme aria-label="Personnaliser mon avatar"><span class="ico huge" style="--c:#7B5CFF"><svg viewBox="0 0 64 64">${APPARATUS.echauf.svg}</svg></span><span class="me-edit">✏️</span></button>
+    <button class="me" data-lookme aria-label="Personnaliser mon avatar"><span class="ico huge" style="--c:#7B5CFF"><svg viewBox="0 0 100 100">${APPARATUS.echauf.svg}</svg></span><span class="me-edit">✏️</span></button>
   </section>`:''}
   <div class="teen-stats"><div><b>${got.length}<small>/${ELEMENTS.length}</small></b><span>skills validés</span></div><div><b>🔥 ${trainCount(k)}</b><span>trainings cette semaine</span></div><div><b>${p?p.total:0}<small> min</small></b><span>de séance ${next?fr(next.date,{weekday:'long'}):''}</span></div></div>
   ${p?`<section class="kid-card"><div class="sh"><h2>Ta séance</h2><span class="sess-meta">${esc(p.theme)}</span></div>
@@ -1561,14 +1586,13 @@ function renderOnb(){
   if(!onb){ host.innerHTML=''; return; }
   const st=onb.step; const l=look(kid());
   const dots=`<div class="onb-dots">${[0,1,2,3].map(i=>`<i class="${i===st?'on':''}"></i>`).join('')}</div>`;
-  const sw=(part)=>`<div class="swatches">${LOOK[part].map(c=>`<button class="sw${l[part]===c?' on':''}" data-look="${part}|${c}" style="--sw:${c}" aria-label="${part}" aria-pressed="${l[part]===c}"></button>`).join('')}</div>`;
   const screens=[
     `<img class="logo" src="${LOGO}" alt="" width="150" height="150"><h1 class="hello">Bienvenue à <span class="script">l’AGM</span> !</h1><p>Les cours, l’agenda et toutes les infos du club, au même endroit.</p>`,
     `<div class="onb-art">${ico('saut','huge')}</div><h1 class="hello">Ton <span class="script">enfant</span></h1>
      <div class="field"><label for="onbName">Son prénom</label><input id="onbName" data-onbname value="${esc(onb.name)}" maxlength="20"></div>
      <div class="opts three">${Object.entries(GROUPS).map(([n,g])=>`<button class="opt grp${onb.group===n?' on':''}" data-onbgroup="${n}"><b>${n}</b>${stars(g.n)}</button>`).join('')}</div>`,
     `<div class="onb-art">${ico('poutre','huge')}</div><h1 class="hello">Crée son <span class="script">avatar</span></h1>
-     <div class="field"><label>Peau</label>${sw('skin')}</div><div class="field"><label>Cheveux</label>${sw('hair')}</div><div class="field"><label>Justaucorps</label>${sw('suit')}</div>`,
+     <div class="field"><label>Ta couleur néon</label><div class="swatches">${NEON_OPTS.map(c=>{const n=c.split(',');return `<button class="sw${l.neon===c?' on':''}" data-look="neon|${c}" style="--sw:linear-gradient(135deg,${n[0]},${n[1]},${n[2]})" aria-label="Dégradé ${n.join(' ')}" aria-pressed="${l.neon===c}"></button>`}).join('')}</div></div>`,
     `<div class="onb-art">${ico('sol','huge')}</div><h1 class="hello">Avant chaque <span class="script">cours</span></h1><p>Un seul geste pour dire aux coachs si ${esc(onb.name||'ton enfant')} sera là.</p>
      <div class="rsvp demo"><span class="yes on">${I.yes}Oui</span><span class="no">${I.no}Non</span></div>`,
   ];
