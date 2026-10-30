@@ -489,6 +489,18 @@ a.brand{text-decoration:none;color:var(--ink)}
 .next-top .date small{color:rgba(255,255,255,.8)}
 .next-info{display:flex;flex-direction:column;gap:2px;min-width:0}
 .next-info b{font-family:var(--f-display);font-size:20px;line-height:1.2}
+.todo{display:flex;flex-direction:column;gap:8px}
+.todo-row{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;border-radius:18px;border:1px solid var(--line);background:var(--surface);color:var(--ink);text-decoration:none;text-align:left;font:inherit;cursor:pointer}
+.todo-row.hot{border:2px solid var(--wait);background:var(--wait-soft)}
+.todo-ic{width:40px;height:40px;flex:none;border-radius:12px;display:grid;place-items:center;font-size:20px;background:var(--surface-2)}
+.todo-row.hot .todo-ic{background:var(--surface)}
+.todo-main{display:flex;flex-direction:column;min-width:0;flex:1}.todo-main b{font-size:15px;line-height:1.25}.todo-main small{color:var(--muted);font-size:13px;font-weight:600}
+.todo-go{font-size:24px;color:var(--muted);line-height:1}
+.todo-ok{padding:12px 14px;border-radius:16px;background:var(--ok-soft);color:var(--ok);font-weight:800;text-align:center}
+.abs-dates{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.abs-dates input{width:100%}
+.reasons label.reason{cursor:pointer}.reasons label.reason input{position:absolute;opacity:0;pointer-events:none}
+.reasons label.reason:has(input:checked){background:var(--brand);border-color:var(--brand);color:#fff}
 .dash{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media (min-width:900px){.dash{grid-template-columns:repeat(4,1fr)}}
 .tile{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:14px;border-radius:18px;border:1px solid var(--line);background:var(--surface);color:var(--ink);text-decoration:none;text-align:left;font:inherit;min-height:112px}
@@ -1055,6 +1067,7 @@ function vAccueil(){
     ${rsvpControl(k,next,true)}
     <button class="tn-prog" data-plan="${next.key}">Le programme : ${esc(p.theme)} ›</button>
   </section>`:'<div class="empty">Pas de cours prévu.</div>'}
+  ${todoList(k,real)}
   <div class="dash">
     ${tile('#planning','',pending||'✓',pending?'cours à répondre':'Présences à jour',pending?'warn':'good','📅')}
     ${tile('#messages','',unread||'0',unread>1?'messages non lus':'message non lu',unread?'info':'calm','💬')}
@@ -1062,6 +1075,43 @@ function vAccueil(){
     ${tile('','data-mybadges',`${nb}<small>/${ELEMENTS.length}</small>`,`skills validés · 🔥 ${trainCount(k)} cette semaine`,'star','⚡')}
   </div>
   ${nextEv?`<section class="kid-card"><div class="sh"><h2>Prochain événement</h2><a class="link" href="#agenda">Agenda ›</a></div><div class="events one">${eventCard(nextEv,k)}</div></section>`:''}`;
+}
+function todoList(k,real){
+  const items=[];
+  COMPETS().filter(e=>parse(e.date)>=today&&isSel(e.id,k.group,k.name)&&!regs[`${k.id}|${e.id}`]).forEach(e=>
+    items.push({ic:'🏅',t:`Confirmer la présence de ${esc(k.name)}`,sub:`${e.title} · ${fr(parse(e.date),{day:'numeric',month:'short'})}`,attr:`data-ev="${e.id}"`,hot:true}));
+  TODO_DOCS.filter(d=>!(sent[`${k.id}|${d.id}`]||d.init==='done')).forEach(d=>
+    items.push({ic:d.ic,t:d.name,sub:d.due?`À donner avant le ${d.due}`:'À donner au club',href:'#docs'}));
+  const pend=real.slice(0,6).filter(s=>!rsvp[keyFor(k,s)]).length;
+  if(pend) items.push({ic:'📅',t:`Répondre pour ${pend} cours`,sub:'Oui, non, ou absente plusieurs cours d’un coup',href:'#planning'});
+  if(!items.length) return `<div class="todo-ok">✓ Rien à faire pour ${esc(k.name)}, tout est à jour</div>`;
+  return `<section class="todo" aria-label="À faire"><div class="sh"><h2>À faire</h2><span class="pill wait tnum">${items.length}</span></div>
+    ${items.map(x=>{const tag=x.href?'a':'button';return `<${tag} class="todo-row${x.hot?' hot':''}" ${x.href?`href="${x.href}"`:x.attr}><span class="todo-ic" aria-hidden="true">${x.ic}</span><span class="todo-main"><b>${x.t}</b><small>${esc(x.sub)}</small></span><span class="todo-go" aria-hidden="true">›</span></${tag}>`}).join('')}
+  </section>`;
+}
+/* ---------- absence sur une période ---------- */
+function absSheet(){
+  const k=kid(); const first=sessions(k.group,10).find(s=>s.type==='sess'&&!s.ferie); const d0=first?first.date:today; const d1=new Date(d0); d1.setDate(d1.getDate()+7);
+  openSheet(`<h2>${esc(k.name)} sera absente</h2><p class="hint" style="margin:0">Tous les cours de la période passent en « Non », et les coachs sont prévenus.</p>
+  <form id="absForm" style="display:flex;flex-direction:column;gap:14px">
+    <div class="abs-dates"><div class="field"><label for="absFrom">Du</label><input type="date" id="absFrom" required value="${iso(d0)}"></div><div class="field"><label for="absTo">Au</label><input type="date" id="absTo" required value="${iso(d1)}"></div></div>
+    <fieldset class="field"><legend>Pourquoi ?</legend><div class="reasons">${[['Malade','🤒'],['Famille','🏠'],['Autre','💬']].map(([r,e],i)=>`<label class="reason"><input type="radio" name="absR" value="${r}" ${i===0?'checked':''}><span aria-hidden="true">${e}</span> ${r}</label>`).join('')}</div></fieldset>
+    <p class="sess-meta" id="absCount" style="margin:0"></p>
+    <button class="btn big">Valider l’absence</button></form>`);
+  absPreview();
+}
+function absRange(){ const a=document.getElementById('absFrom').value,b=document.getElementById('absTo').value; if(!a||!b) return [];
+  const k=kid(), from=parse(a), to=parse(b); return sessions(k.group,26).filter(s=>s.type==='sess'&&!s.ferie&&s.date>=from&&s.date<=to); }
+function absPreview(){ const n=absRange().length, el=document.getElementById('absCount'); if(el) el.textContent=n?`${n} cours concerné${n>1?'s':''}`:'Aucun cours sur cette période'; }
+/* ---------- ajouter à mon agenda (.ics) ---------- */
+function downloadIcs(ev){
+  const d=parse(ev.date), e=ev.end?parse(ev.end):new Date(d); const e2=new Date(e); e2.setDate(e2.getDate()+1);
+  const f=x=>iso(x).replace(/-/g,''), clean=t=>String(t).replace(/[,;\\]/g,m=>'\\'+m);
+  const loc=ev.kind==='compet'?'Lieu précisé dans la convocation':PLACE;
+  const body=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//AGM Gym//FR','BEGIN:VEVENT',`UID:${ev.id}-${kid().id}@agm-gym`,`DTSTAMP:${f(new Date())}T000000Z`,
+    `DTSTART;VALUE=DATE:${f(d)}`,`DTEND;VALUE=DATE:${f(e2)}`,`SUMMARY:${clean(ev.title)} · ${clean(kid().name)}`,`LOCATION:${clean(loc)}`,`DESCRIPTION:${clean(ev.time+' · '+ev.text)}`,'END:VEVENT','END:VCALENDAR'].join('\r\n');
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([body],{type:'text/calendar'})); a.download=`agm-${ev.id}.ics`; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);
+  toast('📅 Ouvre le fichier pour l’ajouter à ton agenda');
 }
 function vPlanning(){
   const k=kid();
@@ -1077,6 +1127,7 @@ function vPlanning(){
   ${kidChips()}
   <div class="summary"><div class="sum ok"><b class="tnum">${c.yes}</b><span>✓ Oui</span></div><div class="sum no"><b class="tnum">${c.no}</b><span>✕ Non</span></div><div class="sum wait"><b class="tnum">${c.wait}</b><span>? À répondre</span></div></div>
   ${c.wait?`<button class="btn big" data-bulk="yes">${I.yes}Oui à tous les cours</button>`:`<div class="allgood">🎉 Tout est répondu, bravo !</div>`}
+  <button class="btn ghost abs-btn" data-abs>🗓️ Absente plusieurs cours ?</button>
   <div class="week">${html}</div>
   ${c.yes+c.no?`<button class="link" data-bulk="reset" style="align-self:center">Effacer mes réponses</button>`:''}`;
 }
@@ -1481,7 +1532,7 @@ function evSheet(id){
   else action=`${ev.guests?`<div class="field"><label>On vient à combien en plus ?</label><div class="stepper"><button type="button" data-step="-1" aria-label="Moins">−</button><b id="g" class="tnum">1</b><button type="button" data-step="1" aria-label="Plus">+</button></div></div>`:''}<button class="btn big" data-confirm="${ev.id}">Inscrire ${esc(k.name)}</button>`;
   openSheet(`<span class="ev-ic lg" aria-hidden="true">${KIND_IC[ev.kind]}</span><span class="kind ${ev.kind}">${KIND[ev.kind]}</span><h2>${ev.title}</h2>
   <div class="facts"><span>📅 ${range}</span><span>⏰ ${ev.time}</span><span>💶 ${ev.price}</span></div>
-  <p class="sess-meta" style="margin:0">${ev.text}</p>${action}`);
+  <p class="sess-meta" style="margin:0">${ev.text}</p>${action}${past?'':`<button class="btn ghost" data-ics="${ev.id}">📅 Ajouter à mon agenda</button>`}`);
 }
 
 /* ================= rendu & événements ================= */
@@ -1593,6 +1644,8 @@ document.addEventListener('click',e=>{
   else if(d.quick){ sendMsg(d.quick); }
   else if(d.heart){ const r=b.getBoundingClientRect(); hearts[d.heart]=!hearts[d.heart]; store.set('hearts',hearts); const y=document.getElementById('msgs')?.scrollTop; render(); const m=document.getElementById('msgs'); if(m&&y!=null) m.scrollTop=y; if(hearts[d.heart]) burst(r); }
   else if(d.cgroup){ coachGroup=d.cgroup; store.set('cgroup',coachGroup); draft=null; picker=false; render(); }
+  else if('abs' in d){ absSheet(); }
+  else if(d.ics){ downloadIcs(EVENTS.find(e=>e.id===d.ics)); }
   else if(d.cev){ coachEv=d.cev; store.set('cev',coachEv); render(); }
   else if(d.csel){ const g=coachGroup,k=`${coachEv}|${g}|${d.csel}`; csel[k]=!isSel(coachEv,g,d.csel); store.set('csel',csel); render(); toast(csel[k]?`🏅 ${d.csel} sélectionnée · ses parents sont prévenus`:`${d.csel} retirée de la sélection`); }
   else if('relance' in d){ const r=b.getBoundingClientRect(); burst(r); toast('🔔 Rappel envoyé aux parents'); }
@@ -1661,6 +1714,7 @@ document.addEventListener('input',e=>{
   if(k==='theme') draft.theme=e.target.value; else if(k==='defi') draft.defi=e.target.value; else { draft.steps[+k.split('|')[1]][2]=e.target.value; }
 });
 document.addEventListener('change',e=>{
+  if(e.target.id==='absFrom'||e.target.id==='absTo'){ absPreview(); return; }
   if(e.target.id==='ack'){ const bt=document.querySelector('[data-presence]'); if(bt) bt.disabled=!e.target.checked; return; }
   if(e.target.id==='docIn'&&e.target.files.length){ const r=document.querySelector(`[data-send="${pendingDoc}"]`)?.getBoundingClientRect();
     if(pendingDoc!=='libre'){ sent[`${kid().id}|${pendingDoc}`]='Envoyé'; store.set('sent',sent); }
@@ -1672,6 +1726,9 @@ document.addEventListener('change',e=>{
 document.addEventListener('submit',e=>{
   if(e.target.id==='exForm'){ e.preventDefault(); const n=document.getElementById('exName').value.trim(); if(!n) return; const k=document.getElementById('exK').value;
     myEx.push({k,n,m:10}); store.set('myEx',myEx); bankF=k; bankSheet(); toast('✏️ Exercice ajouté à ta banque'); return; }
+  if(e.target.id==='absForm'){ e.preventDefault(); const list=absRange(); if(!list.length){toast('Aucun cours sur cette période');return}
+    const r=(document.querySelector('[name=absR]:checked')||{}).value, k=kid(); list.forEach(s=>{const key=keyFor(k,s); rsvp[key]='no'; if(r) reasons[key]=r;});
+    save(); closeSheet(); render(); toast(`✓ ${list.length} cours en absence · coachs prévenus`); return; }
   if(e.target.id==='composer'){ e.preventDefault(); sendMsg(document.getElementById('msgIn').value); return; }
   if(e.target.id!=='kidForm') return; e.preventDefault();
   const name=document.getElementById('kname').value.trim(); if(!name) return;
