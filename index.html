@@ -1393,7 +1393,7 @@ function tutoSheet(){
     <p class="tuto-txt">${c.steps[tuto.i]}</p>
     <div class="tuto-thumbs">${c.steps.map((_,i)=>`<button class="${i===tuto.i?'on':''}" data-tstep="${i}" aria-label="Étape ${i+1}">${frame(tuto.id,i,'sm')}</button>`).join('')}</div>
     <div class="tuto-ctrl"><button class="btn ghost" data-tnav="-1" ${tuto.i?'':'disabled'}>‹</button><button class="btn" data-tplay>${tuto.play?'⏸ Pause':'▶ Lecture'}</button><button class="btn ghost" data-tnav="1" ${tuto.i<2?'':'disabled'}>›</button></div>
-    <div class="hc-safe">👩 Avec un adulte à côté${c.tapis?' · 🛏️ Sur un tapis':''}</div></div></div>`;
+    <div class="hc-safe">Échauffe-toi avant${c.tapis?' · Sur un tapis':''}</div></div></div>`;
 }
 function tutoPlay(on){ clearInterval(tutoTimer); tuto.play=on; if(on){ tutoTimer=setInterval(()=>{ if(!document.querySelector('.tuto-sheet')){clearInterval(tutoTimer);return} tuto.i=(tuto.i+1)%3; tutoSheet(); },2200); } tutoSheet(); }
 
