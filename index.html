@@ -633,7 +633,7 @@ body.kidmode .wrap{max-width:720px}
 .modebar{position:sticky;top:env(safe-area-inset-top,0px);z-index:15;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:4px;border-radius:18px;background:var(--surface);border:1px solid var(--line);box-shadow:0 6px 18px rgba(30,15,50,.08)}
 .modebar button{display:flex;align-items:center;justify-content:center;gap:8px;border:0;background:transparent;border-radius:14px;padding:8px 6px;font-weight:800;font-size:14px;color:var(--muted);min-height:46px}
 .modebar .m-ic{font-size:18px}
-.modebar .av{width:26px;height:26px}
+.modebar .av{width:28px;height:28px;border-radius:9px;flex:none}
 .modebar .m-parent[aria-selected="true"]{background:#722F9D;color:#fff}
 .modebar .m-kid[aria-selected="true"]{background:linear-gradient(135deg,#FF2E88,#7B5CFF);color:#fff}
 .modebar .m-coach[aria-selected="true"]{background:#0F6E78;color:#fff}
@@ -822,7 +822,7 @@ html{transition:background-color .25s}
   <main class="main"><div class="wrap" id="view"></div></main>
   <nav class="tabbar" id="tabNav" aria-label="Navigation"></nav>
 </div>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="ng" gradientUnits="userSpaceOnUse" x1="8" y1="8" x2="92" y2="92"><stop offset="0" style="stop-color:var(--n1)"/><stop offset=".5" style="stop-color:var(--n2)"/><stop offset="1" style="stop-color:var(--n3)"/></linearGradient><linearGradient id="ngf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--n1)"/><stop offset=".5" style="stop-color:var(--n2)"/><stop offset="1" style="stop-color:var(--n3)"/></linearGradient></defs></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="ng" gradientUnits="userSpaceOnUse" x1="8" y1="8" x2="92" y2="92"><stop offset="0" style="stop-color:var(--n1)"/><stop offset=".5" style="stop-color:var(--n2)"/><stop offset="1" style="stop-color:var(--n3)"/></linearGradient><linearGradient id="ngf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--n1)"/><stop offset=".5" style="stop-color:var(--n2)"/><stop offset="1" style="stop-color:var(--n3)"/></linearGradient><linearGradient id="ngp" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFB3E0"/><stop offset=".5" stop-color="#C77DFF"/><stop offset="1" stop-color="#8E5CFF"/></linearGradient><linearGradient id="ngc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9DFFF0"/><stop offset=".5" stop-color="#2EE6D6"/><stop offset="1" stop-color="#4FA8FF"/></linearGradient></defs></svg>
 <div id="layer"></div>
 <div id="onb"></div>
 
@@ -908,6 +908,8 @@ const APPARATUS = {
 const DEFAULT_LOOK={neon:NEON_OPTS[0]};
 const look=k=>({neon:(k&&k.look&&k.look.neon)||DEFAULT_LOOK.neon});
 function applyLook(){const n=look(kid()).neon.split(',');const r=document.documentElement.style;r.setProperty('--n1',n[0]);r.setProperty('--n2',n[1]);r.setProperty('--n3',n[2])}
+const parentSvg=()=>`<svg viewBox="0 0 100 100"><circle cx="38" cy="34" r="14" fill="url(#ngp)"/><path d="M8 100 Q38 50 68 100Z" fill="url(#ngp)"/><circle cx="73" cy="58" r="10" fill="url(#ngp)" opacity=".85"/><path d="M53 100 Q73 70 93 100Z" fill="url(#ngp)" opacity=".85"/></svg>`;
+const coachSvg=locked=>`<svg viewBox="0 0 100 100"><circle cx="46" cy="38" r="15" fill="url(#ngc)"/><path d="M14 100 Q46 54 78 100Z" fill="url(#ngc)"/>${locked?'<g transform="translate(64 8)"><rect x="0" y="12" width="28" height="22" rx="5" fill="#140C26"/><rect x="3" y="15" width="22" height="16" rx="3.5" fill="url(#ngc)"/><path d="M7 13v-4a7 7 0 0 1 14 0v4" fill="none" stroke="url(#ngc)" stroke-width="4" stroke-linecap="round"/></g>':''}</svg>`;
 const faceSvg=()=>`<svg viewBox="0 0 100 100"><circle cx="50" cy="40" r="17" style="fill:url(#ngf)"/><path d="M18 100 Q50 52 82 100Z" style="fill:url(#ngf)"/></svg>`;
 const PLANS = [
   {theme:'Session équilibre',defi:'Tenir 5 s sur un pied au milieu de la poutre',steps:[['echauf',2,'Cardio et sauts'],['poutre',4,'Pointes, demi-tour, saut'],['sol',3,'Roulades et chandelle'],['jeu',1,'Jeu de réaction'],['etire',1,'Grand écart et pont']]},
@@ -1546,9 +1548,9 @@ let onb=store.get('onb2',false)?null:{step:0,name:kids[0].name,group:kids[0].gro
 function modeBar(cur){
   const k=kid();
   return `<div class="modebar" role="tablist" aria-label="Mode">
-    <button role="tab" class="m-parent" data-mode="parent" aria-selected="${cur==='parent'}"><span class="m-ic">👩</span><span>Parent</span></button>
+    <button role="tab" class="m-parent" data-mode="parent" aria-selected="${cur==='parent'}"><span class="av face">${parentSvg()}</span><span>Parent</span></button>
     <button role="tab" class="m-kid" data-mode="kid" aria-selected="${cur==='kid'}"><span class="av face">${faceSvg(look(k))}</span><span>${esc(k.name)}</span></button>
-    <button role="tab" class="m-coach" data-mode="coach" aria-selected="${cur==='coach'}"><span class="m-ic">${cur==='coach'&&coachOn?'🔓':'🔒'}</span><span>Coach</span></button>
+    <button role="tab" class="m-coach" data-mode="coach" aria-selected="${cur==='coach'}"><span class="av face">${coachSvg(!(cur==='coach'&&coachOn))}</span><span>Coach</span></button>
   </div>`;
 }
 function vHub(seg){
