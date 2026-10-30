@@ -10,10 +10,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Caveat:wght@600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&display=swap">
 <style>
-:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-body{margin:0}
-img{max-width:100%}
-[hidden]{display:none!important}
 /* Layout: app shell — sidebar on desktop, bottom tab bar on phone; one "next class" hero in the club's night-sky look, then lists. */
 :root{
   --bg:#F3F0F8; --surface:#FFFFFF; --surface-2:#ECE7F4; --line:#DFD7EC; --neon1:#B44CFF; --neon2:#E0207A; --neon3:#18C9BB;
@@ -300,6 +296,11 @@ fieldset{border:0;padding:0;margin:0}
 .hero .when{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:6px}
 .btn.big{display:flex;align-items:center;justify-content:center;gap:10px;min-height:56px;font-size:17px;border-radius:18px;width:100%}
 .btn.big svg{width:20px;height:20px}
+.feewarn{display:flex;gap:12px;align-items:flex-start;background:var(--wait-soft);border:2px solid var(--wait);border-radius:16px;padding:14px 16px;margin:14px 0 10px;color:var(--ink)}
+.feewarn>span{font-size:24px;line-height:1}.feewarn p{margin:0;font-size:15px;line-height:1.45}.feewarn b{color:var(--wait)}
+.selbox{margin-top:14px;padding:12px 14px;border-radius:14px;background:var(--surface-2,rgba(127,127,127,.08));font-weight:700}
+.ackline{display:flex;gap:10px;align-items:center;font-weight:800;margin:4px 0 12px;cursor:pointer}.ackline input{width:22px;height:22px;accent-color:var(--wait)}
+.btn[disabled]{opacity:.45;pointer-events:none}
 .allgood{background:var(--ok-soft);color:var(--ok);font-weight:800;border-radius:16px;padding:14px;text-align:center}
 .big-emoji{font-size:30px}
 .events.one{grid-template-columns:1fr}
@@ -814,9 +815,6 @@ body.coachmode{--neon1:#0F8C98;--neon2:#20A9B5;--neon3:#3FD8E0}
 .appear button[aria-pressed="true"]{background:var(--surface);color:var(--violet);box-shadow:0 2px 8px rgba(40,20,70,.12)}
 html{transition:background-color .25s}
 </style>
-</head>
-<body>
-
 
 <div class="shell">
   <aside class="side" aria-label="Navigation">
@@ -854,9 +852,9 @@ const EVENTS = [
   {id:'e2',kind:'fort',date:'2026-12-05',time:'14:00 – 17:00',title:'Défi Téléthon',text:'Parcours gym ouvert à toute la famille, au profit du Téléthon.',groups:'all',cap:80,taken:31,guests:true,price:'Don libre'},
   {id:'e3',kind:'fort',date:'2026-12-16',time:'10:00 – 12:00',title:'Fête de Noël du club',text:'Démonstration des groupes GAF puis goûter. Chaque famille apporte un gâteau ou une boisson.',groups:'all',cap:120,taken:64,guests:true,price:'Gratuit'},
   {id:'e4',kind:'stage',date:'2026-12-21',end:'2026-12-23',time:'9:00 – 12:00',title:'Stage de Noël GAF',text:'Trois matinées pour travailler poutre et sol, avec un mini-show le dernier jour.',groups:['GAF 1','GAF 2','GAF 3'],cap:24,taken:17,price:'45 € les 3 matinées'},
-  {id:'e5',kind:'compet',date:'2027-01-24',time:'Journée',title:'Compétition départementale FFGym',text:'Première compétition de la saison. Convocation et horaires de passage envoyés 10 jours avant.',groups:['GAF 1'],cap:14,taken:9,price:'Inclus dans la licence'},
+  {id:'e5',kind:'compet',date:'2027-01-24',time:'Journée',title:'Compétition départementale FFGym',text:'1ʳᵉ compétition de la saison. Les coachs ont fait la sélection : il reste à confirmer la présence. Convocation et horaires de passage envoyés 10 jours avant.',groups:'all',cap:14,taken:9,price:'Engagement 15 €'},
   {id:'e6',kind:'stage',date:'2027-02-22',end:'2027-02-24',time:'9:00 – 12:00',title:'Stage d’hiver',text:'Acrobatie, souplesse et jeux d’équipe. Ouvert aux gymnastes GAF de tous niveaux.',groups:['GAF 1','GAF 2','GAF 3'],cap:24,taken:4,price:'45 € les 3 matinées'},
-  {id:'e7',kind:'compet',date:'2027-03-21',time:'Journée',title:'Rencontre interclubs',text:'Rencontre amicale avec les clubs du Var. Idéal pour une première compétition.',groups:['GAF 2','GAF 3'],cap:28,taken:6,price:'8 €'},
+  {id:'e7',kind:'compet',date:'2027-03-21',time:'Journée',title:'Compétition interclubs du Var',text:'2ᵉ compétition de la saison, avec les clubs du Var. Les coachs ont fait la sélection : il reste à confirmer la présence.',groups:'all',cap:28,taken:6,price:'Engagement 15 €'},
   {id:'e8',kind:'fort',date:'2027-06-19',time:'15:00',title:'Gala de fin d’année',text:'Le grand spectacle de la saison, tous les groupes sur scène. Billetterie familles.',groups:'all',cap:300,taken:12,guests:true,price:'5 € la place adulte'},
 ];
 const KIND = {stage:'Stage',compet:'Compétition',fort:'Temps fort'};
@@ -1034,7 +1032,9 @@ function eventCard(ev,k){
   const left=ev.cap-ev.taken-(mine?1:0);
   const range = ev.end ? `${fr(d,{day:'numeric'})} → ${fr(parse(ev.end),{day:'numeric',month:'short'})}` : fr(d,{weekday:'short',day:'numeric',month:'short'});
   let action;
+  const compet=ev.kind==='compet';
   if(past) action='<span class="pill off">Terminé</span>';
+  else if(compet) action= mine ? (mine.status==='no'?'<span class="pill off">Absente</span>':'<span class="pill ok">✓ Présence confirmée</span>') : `<span class="btn sm">Confirmer la présence</span>`;
   else if(mine) action=`<span class="pill ok">✓ Inscrite</span>`;
   else if(!ok) action=`<span class="pill off">${ev.groups.join(', ')}</span>`;
   else if(left<=0) action='<span class="pill no">Complet</span>';
@@ -1042,7 +1042,7 @@ function eventCard(ev,k){
   return `<button class="ev ev-${ev.kind}${past?' past':''}" data-ev="${ev.id}">
     <span class="ev-ic" aria-hidden="true">${KIND_IC[ev.kind]}</span>
     <span class="ev-main"><span class="kind ${ev.kind}">${KIND[ev.kind]}</span><b>${ev.title}</b><span class="sess-meta tnum">${range} · ${ev.time}</span>
-    <span class="ev-foot"><span class="cap tnum"><span class="bar"><i style="width:${Math.min(100,(ev.cap-left)/ev.cap*100)}%"></i></span>${Math.max(left,0)} places</span>${action}</span></span>
+    <span class="ev-foot">${compet?`<span class="cap">🏅 Sélectionnée</span>`:`<span class="cap tnum"><span class="bar"><i style="width:${Math.min(100,(ev.cap-left)/ev.cap*100)}%"></i></span>${Math.max(left,0)} places</span>`}${action}</span></span>
   </button>`;
 }
 
@@ -1097,7 +1097,7 @@ function vPlanning(){
 
 function vAgenda(){
   const k=kid();
-  const list=EVENTS.filter(e=>evFilter==='all'||(evFilter==='mine'?regs[`${k.id}|${e.id}`]:e.kind===evFilter));
+  const list=EVENTS.filter(e=>evFilter==='all'||(evFilter==='mine'?(regs[`${k.id}|${e.id}`]&&regs[`${k.id}|${e.id}`].status!=='no'):e.kind===evFilter));
   const months={}; list.forEach(e=>{const m=fr(parse(e.date),{month:'long',year:'numeric'});(months[m]=months[m]||[]).push(e)});
   const f=[['all','Tout'],['stage','🤸 Stages'],['compet','🏅 Compét’'],['fort','🎉 Fêtes'],['mine','✓ Inscrite']];
   return `
@@ -1507,7 +1507,14 @@ function evSheet(id){
   const d=parse(ev.date), past=(ev.end?parse(ev.end):d)<today, left=ev.cap-ev.taken-(mine?1:0), ok=forGroup(ev,k.group);
   const range = ev.end ? `Du ${fr(d,{day:'numeric'})} au ${fr(parse(ev.end),{day:'numeric',month:'long'})}` : cap1(fr(d,{weekday:'long',day:'numeric',month:'long'}));
   let action;
+  const warn=`<div class="feewarn" role="note"><span aria-hidden="true">⚠️</span><p><b>Important :</b> si l’enfant est inscrit et ne vient pas, <b>cette somme (${esc(ev.price.replace(/^Engagement\s*/,''))}) sera à la charge des parents</b>, sauf maladie avec certificat médical.</p></div>`;
   if(past) action='<span class="pill off">Terminé</span>';
+  else if(ev.kind==='compet'){
+    const sel=`<div class="selbox">🏅 <b>${esc(k.name)}</b> a été sélectionnée par les coachs pour cette compétition.</div>`;
+    if(mine&&mine.status!=='no') action=`${sel}${warn}<div class="allgood">✓ Présence de ${esc(k.name)} confirmée</div><button class="link" data-unreg="${ev.id}">Modifier ma réponse</button>`;
+    else if(mine) action=`${sel}<div class="empty">${esc(k.name)} ne pourra pas venir · les coachs sont prévenus</div><button class="link" data-unreg="${ev.id}">Modifier ma réponse</button>`;
+    else action=`${sel}${warn}<label class="ackline"><input type="checkbox" id="ack"> J’ai lu et j’accepte cette condition</label><button class="btn big" data-presence="${ev.id}" disabled>Je confirme la présence de ${esc(k.name)}</button><button class="link" data-absent="${ev.id}">${esc(k.name)} ne pourra pas venir</button>`;
+  }
   else if(mine) action=`<div class="allgood">✓ ${esc(k.name)} est inscrite${mine.guests?` · +${mine.guests}`:''}</div><button class="link" data-unreg="${ev.id}">Annuler l’inscription</button>`;
   else if(!ok) action=`<div class="empty">Réservé aux ${ev.groups.join(', ')}</div>`;
   else if(left<=0) action='<div class="empty">Complet</div>';
@@ -1681,6 +1688,8 @@ document.addEventListener('click',e=>{
   else if(d.ev){ evSheet(d.ev); }
   else if(d.step){ const g=document.getElementById('g'); g.textContent=Math.max(0,Math.min(6,+g.textContent+ +d.step)); }
   else if(d.confirm){ const g=document.getElementById('g'); const r=b.getBoundingClientRect(); regs[`${kid().id}|${d.confirm}`]={guests:g?+g.textContent:0}; save();closeSheet();render();burst(r); toast(`🎉 ${kid().name} est inscrite !`); }
+  else if(d.presence){ const r=b.getBoundingClientRect(); regs[`${kid().id}|${d.presence}`]={status:'yes',at:Date.now()}; save();closeSheet();render();burst(r); toast(`🏅 Présence de ${kid().name} confirmée !`); }
+  else if(d.absent){ regs[`${kid().id}|${d.absent}`]={status:'no'}; save();closeSheet();render(); toast('Absence signalée aux coachs'); }
   else if(d.unreg){ delete regs[`${kid().id}|${d.unreg}`]; save();closeSheet();render(); toast('Inscription annulée'); }
   else if(d.bulk){ const k=kid(); sessions(k.group,10).filter(s=>s.type==='sess'&&!s.ferie).forEach(s=>{const key=keyFor(k,s); if(d.bulk==='reset'){delete rsvp[key];delete reasons[key]} else if(!rsvp[key]) rsvp[key]='yes'}); const r=b.getBoundingClientRect(); save();render(); if(d.bulk==='reset') toast('Réponses effacées'); else {burst(r);toast('🎉 Super, tout est confirmé !')} }
   else if(d.copy){ const t=document.getElementById(d.copy).textContent; const done=()=>toast('Adresse copiée');
@@ -1693,6 +1702,7 @@ document.addEventListener('input',e=>{
   if(k==='theme') draft.theme=e.target.value; else if(k==='defi') draft.defi=e.target.value; else { draft.steps[+k.split('|')[1]][2]=e.target.value; }
 });
 document.addEventListener('change',e=>{
+  if(e.target.id==='ack'){ const bt=document.querySelector('[data-presence]'); if(bt) bt.disabled=!e.target.checked; return; }
   if(e.target.id==='docIn'&&e.target.files.length){ const r=document.querySelector(`[data-send="${pendingDoc}"]`)?.getBoundingClientRect();
     if(pendingDoc!=='libre'){ sent[`${kid().id}|${pendingDoc}`]='Envoyé'; store.set('sent',sent); }
     render(); if(r) burst(r); toast('✓ Envoyé au club, merci !'); return; }
@@ -1717,6 +1727,3 @@ window.addEventListener('hashchange',()=>{render();window.scrollTo(0,0)});
 document.getElementById("sideLogo").src=LOGO;
 render();
 </script>
-
-</body>
-</html>
