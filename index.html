@@ -594,6 +594,7 @@ body.kidmode .wrap{max-width:720px}
 /* playlist */
 .seg.four{grid-template-columns:repeat(4,1fr)}
 .seg.four button{font-size:13px;padding:10px 2px}
+.seg.five{grid-template-columns:repeat(5,1fr)}.seg.five button{font-size:12px;padding:10px 1px;white-space:nowrap}
 .songs{display:flex;flex-direction:column;gap:6px}
 .song{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:14px;background:var(--surface-2)}
 .song.top{background:color-mix(in srgb,var(--violet) 14%,var(--surface))}
@@ -1034,6 +1035,7 @@ function eventCard(ev,k){
   let action;
   const compet=ev.kind==='compet';
   if(past) action='<span class="pill off">Terminé</span>';
+  else if(compet&&!isSel(ev.id,k.group,k.name)) action='<span class="pill off">Non retenue</span>';
   else if(compet) action= mine ? (mine.status==='no'?'<span class="pill off">Absente</span>':'<span class="pill ok">✓ Présence confirmée</span>') : `<span class="btn sm">Confirmer la présence</span>`;
   else if(mine) action=`<span class="pill ok">✓ Inscrite</span>`;
   else if(!ok) action=`<span class="pill off">${ev.groups.join(', ')}</span>`;
@@ -1042,7 +1044,7 @@ function eventCard(ev,k){
   return `<button class="ev ev-${ev.kind}${past?' past':''}" data-ev="${ev.id}">
     <span class="ev-ic" aria-hidden="true">${KIND_IC[ev.kind]}</span>
     <span class="ev-main"><span class="kind ${ev.kind}">${KIND[ev.kind]}</span><b>${ev.title}</b><span class="sess-meta tnum">${range} · ${ev.time}</span>
-    <span class="ev-foot">${compet?`<span class="cap">🏅 Sélectionnée</span>`:`<span class="cap tnum"><span class="bar"><i style="width:${Math.min(100,(ev.cap-left)/ev.cap*100)}%"></i></span>${Math.max(left,0)} places</span>`}${action}</span></span>
+    <span class="ev-foot">${compet?`<span class="cap">${isSel(ev.id,k.group,k.name)?'🏅 Sélectionnée':'Sélection des coachs'}</span>`:`<span class="cap tnum"><span class="bar"><i style="width:${Math.min(100,(ev.cap-left)/ev.cap*100)}%"></i></span>${Math.max(left,0)} places</span>`}${action}</span></span>
   </button>`;
 }
 
@@ -1146,6 +1148,26 @@ function roster(g){
   const others=NAMES.slice(off,off+n).filter(x=>!real.some(r=>r.name===x)).slice(0,n-real.length).map((name,i)=>({name,i}));
   return [...real,...others].sort((a,b)=>a.name.localeCompare(b.name,'fr'));
 }
+/* ================= sélection compétitions (coachs) ================= */
+let csel=store.get('csel',{}), coachEv=store.get('cev','e5');
+const COMPETS=()=>EVENTS.filter(e=>e.kind==='compet');
+function isSel(evId,g,name){const k=`${evId}|${g}|${name}`; if(k in csel) return csel[k]; const gym=roster(g).find(x=>x.name===name); return !gym||gym.kid?true:(gym.i%3!==2);}
+function selStatus(evId,g,gym){
+  if(gym.kid){const r=regs[`${gym.kid.id}|${evId}`]; return r?(r.status==='no'?'no':'yes'):null;}
+  const n=(gym.i*7+evId.charCodeAt(1))%6; return n<3?'yes':n===3?'no':null;
+}
+function coachCompet(g){
+  const ev=EVENTS.find(e=>e.id===coachEv)||COMPETS()[0]; const list=roster(g);
+  const sel=list.filter(x=>isSel(ev.id,g,x.name)); const conf=sel.filter(x=>selStatus(ev.id,g,x)==='yes').length; const wait=sel.filter(x=>!selStatus(ev.id,g,x)).length;
+  return `<div class="filters" role="group" aria-label="Compétition">${COMPETS().map(e=>`<button class="chip" data-cev="${e.id}" aria-pressed="${e.id===ev.id}">🏅 ${fr(parse(e.date),{day:'numeric',month:'short'})}</button>`).join('')}</div>
+  <b style="display:block;margin:8px 0 2px">${ev.title}</b>
+  <div class="call-head"><div><b class="coach-n tnum">${sel.length}</b> <span class="sess-meta">/ ${list.length} sélectionnées · ${conf} confirmées</span></div>${wait?`<span class="pill wait">${wait} en attente</span>`:'<span class="pill ok">✓ Tout le monde a répondu</span>'}</div>
+  <p class="hint">Touche un prénom pour la sélectionner ou la retirer. Les parents confirment ensuite la présence dans l’appli.</p>
+  <div class="roll">${list.map(gym=>{const on=isSel(ev.id,g,gym.name), st=on?selStatus(ev.id,g,gym):null;
+    const flag=!on?'<span class="pill off">Non retenue</span>':st==='yes'?'<span class="pill ok">Confirmée</span>':st==='no'?'<span class="pill no">Absente</span>':'<span class="pill wait">En attente</span>';
+    return `<button class="gym${on?' here':''}" data-csel="${esc(gym.name)}" aria-pressed="${on}">${avatar(gym.name)}<span class="gym-name">${esc(gym.name)}</span>${flag}<span class="tick" aria-hidden="true">${on?'✓':''}</span></button>`}).join('')}</div>
+  <button class="btn big" data-relance ${wait?'':'disabled'}>🔔 Relancer les ${wait} parent${wait>1?'s':''} en attente</button>`;
+}
 function coachNext(g){return sessions(g,8).find(x=>x.type==='sess'&&!x.ferie)}
 function answerOf(g,s,gym){
   if(gym.kid) return rsvp[keyFor(gym.kid,s)]||null;
@@ -1207,14 +1229,14 @@ function vLock(){
 function vCoachs(){
   if(!coachOn) return vLock();
   const g=coachGroup; const s=coachNext(g);
-  const tabs=[['appel','✓ Appel'],['prog','🗒️ Prog.'],['badges','★ Badges'],['music','🎵 Musique']];
+  const tabs=[['appel','✓ Appel'],['prog','🗒️ Prog.'],['compet','🏅 Compét'],['badges','★ Badges'],['music','🎵 Musique']];
   return `
   <div class="coach-bar"><span class="sess-meta">Connecté·e en coach</span><button class="link" data-coachout>🔒 Verrouiller</button></div>
   <h1 class="hello">Espace <span class="script">coachs</span></h1>
   <div class="filters" role="group" aria-label="Groupe">${Object.keys(GROUPS).map(n=>`<button class="chip" data-cgroup="${n}" aria-pressed="${n===g}">${n} ${stars(GROUPS[n].n)}</button>`).join('')}</div>
   ${s?`<div class="coach-sess">${dateBlock(s.date)}<div><b>Prochain cours</b><div class="sess-meta tnum">${cap1(fr(s.date,{weekday:'long',day:'numeric',month:'long'}))} · ${hhmm(s.s)} – ${hhmm(s.e)}</div></div></div>`:''}
-  <div class="seg four" role="tablist">${tabs.map(([id,l])=>`<button role="tab" data-ctab="${id}" aria-selected="${coachTab===id}">${l}</button>`).join('')}</div>
-  <section class="card coach-card">${!s?'<div class="empty">Pas de cours prévu.</div>':coachTab==='appel'?coachAppel(g,s):coachTab==='prog'?coachProg(g,s):coachTab==='music'?coachMusic(g):coachBadges(g)}</section>
+  <div class="seg five" role="tablist">${tabs.map(([id,l])=>`<button role="tab" data-ctab="${id}" aria-selected="${coachTab===id}">${l}</button>`).join('')}</div>
+  <section class="card coach-card">${coachTab==='compet'?coachCompet(g):!s?'<div class="empty">Pas de cours prévu.</div>':coachTab==='appel'?coachAppel(g,s):coachTab==='prog'?coachProg(g,s):coachTab==='music'?coachMusic(g):coachBadges(g)}</section>
   <p class="proto">Aperçu côté coachs · gymnastes et réponses simulées pour la démo</p>`;
 }
 function myBadges(k){
@@ -1509,6 +1531,7 @@ function evSheet(id){
   let action;
   const warn=`<div class="feewarn" role="note"><span aria-hidden="true">⚠️</span><p><b>Important :</b> si l’enfant est inscrit et ne vient pas, <b>cette somme (${esc(ev.price.replace(/^Engagement\s*/,''))}) sera à la charge des parents</b>, sauf maladie avec certificat médical.</p></div>`;
   if(past) action='<span class="pill off">Terminé</span>';
+  else if(ev.kind==='compet'&&!isSel(ev.id,k.group,k.name)) action=`<div class="empty">Ce sont les coachs qui choisissent les gymnastes pour chaque compétition. ${esc(k.name)} n’a pas été retenue cette fois-ci.</div>`;
   else if(ev.kind==='compet'){
     const sel=`<div class="selbox">🏅 <b>${esc(k.name)}</b> a été sélectionnée par les coachs pour cette compétition.</div>`;
     if(mine&&mine.status!=='no') action=`${sel}${warn}<div class="allgood">✓ Présence de ${esc(k.name)} confirmée</div><button class="link" data-unreg="${ev.id}">Modifier ma réponse</button>`;
@@ -1634,6 +1657,9 @@ document.addEventListener('click',e=>{
   else if(d.quick){ sendMsg(d.quick); }
   else if(d.heart){ const r=b.getBoundingClientRect(); hearts[d.heart]=!hearts[d.heart]; store.set('hearts',hearts); const y=document.getElementById('msgs')?.scrollTop; render(); const m=document.getElementById('msgs'); if(m&&y!=null) m.scrollTop=y; if(hearts[d.heart]) burst(r); }
   else if(d.cgroup){ coachGroup=d.cgroup; store.set('cgroup',coachGroup); draft=null; picker=false; render(); }
+  else if(d.cev){ coachEv=d.cev; store.set('cev',coachEv); render(); }
+  else if(d.csel){ const g=coachGroup,k=`${coachEv}|${g}|${d.csel}`; csel[k]=!isSel(coachEv,g,d.csel); store.set('csel',csel); render(); toast(csel[k]?`🏅 ${d.csel} sélectionnée · ses parents sont prévenus`:`${d.csel} retirée de la sélection`); }
+  else if('relance' in d){ const r=b.getBoundingClientRect(); burst(r); toast('🔔 Rappel envoyé aux parents'); }
   else if(d.ctab){ coachTab=d.ctab; store.set('ctab',coachTab); picker=false; render(); }
   else if(d.call){ const g=coachGroup,s=coachNext(g),gym=roster(g).find(x=>x.name===d.call); const k=callKey(g,s,gym); appel[k]=!isHere(g,s,gym); delete appelDone[`${g}|${s.key}`]; store.set('appel',appel); store.set('appelDone',appelDone); render(); }
   else if('appeldone' in d){ const g=coachGroup,s=coachNext(g); const r=b.getBoundingClientRect(); appelDone[`${g}|${s.key}`]=1; store.set('appelDone',appelDone); render(); burst(r); toast('✓ Appel enregistré'); }
